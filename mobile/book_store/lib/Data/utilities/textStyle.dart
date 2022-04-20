@@ -19,6 +19,7 @@ class TextStyleApp {
       textAlign: align,
     );
   }
+
     static textStyleCairo(String msg , FontWeight weight , double size , FontStyle style ,Color colorText ,TextAlign align){
     return Text(
       msg,
@@ -49,5 +50,41 @@ class TextStyleApp {
       textAlign: align,
     );
   }
+ static textStyleTitle(String msg ,TextAlign align , bool? underLine){
+    return Text(
+      msg,
+      style: GoogleFonts.abrilFatface(
+        textStyle: TextStyle(
+          fontFamily: "abrilFatface",
+           fontSize: 16,
+           fontStyle: FontStyle.normal,
+           fontWeight: FontWeight.w600,
+           letterSpacing: .5,
+           color: Colors.black,
+           decoration: underLine== true? TextDecoration.underline:null
+        ),
+      ),
+      textAlign: align,
+    );
+  }
+   static textStyledesc(String msg ,TextAlign align , bool? underLine){
+    return Text(
+      msg,
+      style: GoogleFonts.roboto(
+        textStyle: TextStyle(
+          fontFamily: "Roboto",
+           fontSize: 12,
+           fontStyle: FontStyle.normal,
+           fontWeight: FontWeight.w600,
+           letterSpacing: .5,
+           color: Colors.black,
+           decoration: underLine== true? TextDecoration.underline:null
+        ),
+      ),
+      textAlign: align,
+    );
+  }
+
+
 }
 

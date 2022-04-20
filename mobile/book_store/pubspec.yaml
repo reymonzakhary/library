@@ -40,7 +40,8 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   epub_viewer: ^0.2.5
   dio: ^4.0.6
-  permission_handler: ^9.2.0
+  permission_handler: ^9.0.2
+  smooth_page_indicator: ^1.0.0+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

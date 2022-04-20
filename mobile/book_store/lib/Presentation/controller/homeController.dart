@@ -13,6 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class HomeController extends GetxController {
   List<Book> books = [];
+  List<Book> categories = [];
   final pageController = PageController();
   final notiferPAgeController = ValueNotifier(0.0);
 
@@ -111,6 +112,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     books = ExampleData.books;
+    categories = ExampleData.categories;
     pageController.addListener(_lisenerPageController);
     super.onInit();
   }

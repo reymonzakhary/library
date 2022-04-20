@@ -13,3 +13,7 @@ Color brownColor700 = Colors.brown.shade700;
 Color brownColor400 = Colors.brown.shade400;
 Color brownColor200 = Colors.brown.shade200;
 Color brownColor100 = Colors.brown.shade100;
+
+const bookImageHeight = 240.0;
+const bookImageWidth = 180.0;
+const heightHorizantlSection = 250.0 ;
