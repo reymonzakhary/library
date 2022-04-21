@@ -1,43 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:book_store/Presentation/views/screens/homeScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
-void main() {
-  runApp( MyAPP());
-}
-
-class MyAPP extends StatelessWidget {
-  const MyAPP({Key? key}) : super(key: key);
+class ViewerScreenFull extends StatefulWidget {
+  const ViewerScreenFull({ Key? key }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-
-      // ),
-      home: HomeScreen(),
-    );
-  }
+  _ViewerScreenFullState createState() => _ViewerScreenFullState();
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  bool loading = false;
+class _ViewerScreenFullState extends State<ViewerScreenFull> {
+    bool loading = false;
   Dio dio = new Dio();
   String filePath = "";
 
-  @override
+   @override
   void initState() {
     super.initState();
     download();
@@ -51,11 +32,56 @@ class _MyAppState extends State<MyApp> {
       loading = false;
     }
   }
+    Future downloadFile() async {
+    print('download1');
+
+    if (await Permission.storage.isGranted) {
+      await Permission.storage.request();
+      await startDownload();
+    } else {
+      await startDownload();
+    }
+  }
+
+  startDownload() async {
+    Directory? appDocDir = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+
+    String path = appDocDir!.path + '/chair.epub';
+    File file = File(path);
+//    await file.delete();
+
+    if (!File(path).existsSync()) {
+      await file.create();
+      await dio.download(
+        'https://github.com/FolioReader/FolioReaderKit/raw/master/Example/'
+        'Shared/Sample%20eBooks/The%20Silver%20Chair.epub',
+        path,
+        deleteOnError: true,
+        onReceiveProgress: (receivedBytes, totalBytes) {
+          print((receivedBytes / totalBytes * 100).toStringAsFixed(0));
+          //Check if download is complete and close the alert dialog
+          if (receivedBytes == totalBytes) {
+            loading = false;
+            setState(() {
+              filePath = path;
+            });
+          }
+        },
+      );
+    } else {
+      loading = false;
+      setState(() {
+        filePath = path;
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return  Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
@@ -114,57 +140,6 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
         ),
-      ),
-   
-
-    );
-  }
-
-  Future downloadFile() async {
-    print('download1');
-
-    if (await Permission.storage.isGranted) {
-      await Permission.storage.request();
-      await startDownload();
-    } else {
-      await startDownload();
-    }
-  }
-
-  startDownload() async {
-    Directory? appDocDir = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
-
-    String path = appDocDir!.path + '/chair.epub';
-    File file = File(path);
-//    await file.delete();
-
-    if (!File(path).existsSync()) {
-      await file.create();
-      await dio.download(
-        'https://github.com/FolioReader/FolioReaderKit/raw/master/Example/'
-        'Shared/Sample%20eBooks/The%20Silver%20Chair.epub',
-        path,
-        deleteOnError: true,
-        onReceiveProgress: (receivedBytes, totalBytes) {
-          print((receivedBytes / totalBytes * 100).toStringAsFixed(0));
-          //Check if download is complete and close the alert dialog
-          if (receivedBytes == totalBytes) {
-            loading = false;
-            setState(() {
-              filePath = path;
-            });
-          }
-        },
       );
-    } else {
-      loading = false;
-      setState(() {
-        filePath = path;
-      });
-    }
   }
-
-
 }

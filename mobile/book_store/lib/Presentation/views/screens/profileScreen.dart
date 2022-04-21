@@ -2,6 +2,7 @@
 import 'package:book_store/Data/Model/book.dart';
 import 'package:book_store/Data/utilities/constant.dart';
 import 'package:book_store/Presentation/controller/homeController.dart';
+import 'package:book_store/Presentation/views/screens/viewerScreenFull.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -44,8 +45,9 @@ class ProfileScreen extends GetView<HomeController> {
                           child: Center(
                             child: Text("VIEW"),
                           ),
-                          onPressed: () async =>
-                              await controller.perviweBook()))
+                          onPressed: ()  =>
+                   Get.to(()=>ViewerScreenFull())
+                   ))
             ],
           ),
         );

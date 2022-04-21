@@ -56,7 +56,7 @@ class TextStyleApp {
       style: GoogleFonts.abrilFatface(
         textStyle: TextStyle(
           fontFamily: "abrilFatface",
-           fontSize: 16,
+           fontSize: 12,
            fontStyle: FontStyle.normal,
            fontWeight: FontWeight.w600,
            letterSpacing: .5,
@@ -70,12 +70,12 @@ class TextStyleApp {
    static textStyledesc(String msg ,TextAlign align , bool? underLine){
     return Text(
       msg,
-      style: GoogleFonts.roboto(
+      style: GoogleFonts.abhayaLibre(
         textStyle: TextStyle(
-          fontFamily: "Roboto",
-           fontSize: 12,
+
+           fontSize: 10,
            fontStyle: FontStyle.normal,
-           fontWeight: FontWeight.w600,
+           fontWeight: FontWeight.w400,
            letterSpacing: .5,
            color: Colors.black,
            decoration: underLine== true? TextDecoration.underline:null

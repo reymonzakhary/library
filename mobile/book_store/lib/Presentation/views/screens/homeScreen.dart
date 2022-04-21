@@ -21,7 +21,7 @@ class HomeScreen extends GetView<HomeController> {
             appBar: AppBar(
                 title: AppSearchBar(),
                  leading:  Container(
-               child:  Icon(Icons.menu_book , color: Colors.black),
+               child: const Icon(Icons.menu_book , color: Colors.black , size: 20,),
                      ),
                 centerTitle: true,
                 backgroundColor: Colors.white,
@@ -71,6 +71,7 @@ class HomeScreen extends GetView<HomeController> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Opacity(
                             opacity: 1 - rotate,
@@ -79,7 +80,7 @@ class HomeScreen extends GetView<HomeController> {
                                 style: GoogleFonts.abrilFatface(
                                   textStyle: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: .5,
                                   ),
@@ -89,10 +90,14 @@ class HomeScreen extends GetView<HomeController> {
                           width: 140,
                           child: Text(
                               "Description of catigories of to expaln how can you get here \n to make idea we m4 store book m4 hat2dr te8amed 3enek \n afred masln masln any 5asmetk yom.",
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w300),
+                             style: GoogleFonts.abhayaLibre(
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: .5,
+                                  ),
+                                ),
                               textAlign: TextAlign.start),
                         )
                            ,SizedBox(height: 20,)
