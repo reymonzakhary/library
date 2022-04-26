@@ -42,6 +42,8 @@ dependencies:
   dio: ^4.0.6
   permission_handler: ^9.0.2
   smooth_page_indicator: ^1.0.0+2
+  flutter_pdfview: ^1.2.2
+  syncfusion_flutter_pdfviewer: ^20.1.50-beta
 dev_dependencies:
   flutter_test:
     sdk: flutter

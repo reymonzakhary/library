@@ -2,7 +2,8 @@
 import 'package:book_store/Data/Model/book.dart';
 import 'package:book_store/Data/utilities/constant.dart';
 import 'package:book_store/Presentation/controller/homeController.dart';
-import 'package:book_store/Presentation/views/screens/viewerScreenFull.dart';
+import 'package:book_store/Presentation/views/screens/viewerTesting.dart/pdfViewer.dart';
+import 'package:book_store/Presentation/views/screens/viewerTesting.dart/viewerScreenFull.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +13,7 @@ class ProfileScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
-      init: HomeController()..download(),
+      init: HomeController(),
       builder: (controller) => LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         final width = constraints.maxWidth;
@@ -34,12 +35,11 @@ class ProfileScreen extends GetView<HomeController> {
                       )),
                 ),
               ),
-              controller.loading.value
-                  ? CircularProgressIndicator()
-                  : Positioned(
+
+                   Positioned(
                       left: 0,
                       right: 0,
-                      bottom: 40,
+                      bottom:100,
                       child: RawMaterialButton(
                           fillColor: blueColor,
                           child: Center(
@@ -48,6 +48,30 @@ class ProfileScreen extends GetView<HomeController> {
                           onPressed: ()  =>
                    Get.to(()=>ViewerScreenFull())
                    ))
+         , Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 50,
+                      child: RawMaterialButton(
+                          fillColor: blueColor,
+                          child: Center(
+                            child: Text("VIEW 1"),
+                          ),
+                          onPressed: ()  => Get.to(()=>ViewerPdf())
+                   ))
+                   ,
+                   Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: RawMaterialButton(
+                          fillColor: blueColor,
+                          child: Center(
+                            child: Text("VIEW 3"),
+                          ),
+                          onPressed: ()  => Get.to(()=>HomePage())
+                   ))
+
             ],
           ),
         );
