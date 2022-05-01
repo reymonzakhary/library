@@ -36,7 +36,7 @@ class _ViewerScreenFullState extends State<ViewerScreenFull> {
     print('download1');
 
     if (await Permission.storage.isGranted) {
-      await Permission.storage.request();
+      await Permission.storage.request().then((value) => print(value.isGranted));
       await startDownload();
     } else {
       await startDownload();
@@ -115,7 +115,7 @@ class _ViewerScreenFullState extends State<ViewerScreenFull> {
                       filePath,
                       lastLocation: EpubLocator.fromJson({
                         "bookId": "2239",
-                        "href": "/OEBPS/ch06.xhtml",
+                        "href": "/OEBPS/ch07.xhtml",
                         "created": 1539934158390,
                         "locations": {
                           "cfi": "epubcfi(/0!/4/4[simple_book]/2/2/6)"
@@ -123,17 +123,6 @@ class _ViewerScreenFullState extends State<ViewerScreenFull> {
                       }),
                     );
 
-                    // await EpubViewer.openAsset(
-                    //   'assets/4.epub',
-                    //   lastLocation: EpubLocator.fromJson({
-                    //     "bookId": "2239",
-                    //     "href": "/OEBPS/ch06.xhtml",
-                    //     "created": 1539934158390,
-                    //     "locations": {
-                    //       "cfi": "epubcfi(/0!/4/4[simple_book]/2/2/6)"
-                    //     }
-                    //   }),
-                    // );
                   },
                   child: Container(
                     child: Text('open epub'),
