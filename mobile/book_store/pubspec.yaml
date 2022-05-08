@@ -36,11 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.1
   carousel_slider: ^4.0.0
-  google_fonts: 2.1.1
+  google_fonts: any
   flutter_rating_bar: ^4.0.0
   epub_viewer: ^0.2.5
   dio: ^4.0.6
-  permission_handler: ^9.0.2
+  permission_handler: any
   smooth_page_indicator: ^1.0.0+2
   flutter_pdfview: ^1.2.2
   syncfusion_flutter_pdfviewer: ^20.1.50-beta

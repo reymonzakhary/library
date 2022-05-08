@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 class ViewerScreenFull extends StatefulWidget {
@@ -36,11 +37,14 @@ class _ViewerScreenFullState extends State<ViewerScreenFull> {
     print('download1');
 
     if (await Permission.storage.isGranted) {
-      await Permission.storage.request().then((value) => print(value.isGranted));
+      print("permision storage is granted ${await Permission.storage.status}");
       await startDownload();
     } else {
-      await startDownload();
+       await Permission.storage.request().then((value) => print(value.isGranted));
+        print("permision storage not granted ${await Permission.storage.status}");
+    //   await startDownload();
     }
+    print("permision storage ${await Permission.storage.status}");
   }
 
   startDownload() async {
@@ -50,26 +54,46 @@ class _ViewerScreenFullState extends State<ViewerScreenFull> {
 
     String path = appDocDir!.path + '/chair.epub';
     File file = File(path);
-//    await file.delete();
+    // try{
+    //     await file.delete();
+    // }catch(e){
+    //     print("Error Delete file ${e.toString()}");
+    // }
+
 
     if (!File(path).existsSync()) {
+      // check internet status
       await file.create();
-      await dio.download(
+      try {
+    await dio.download(
         'https://github.com/FolioReader/FolioReaderKit/raw/master/Example/'
         'Shared/Sample%20eBooks/The%20Silver%20Chair.epub',
         path,
         deleteOnError: true,
         onReceiveProgress: (receivedBytes, totalBytes) {
-          print((receivedBytes / totalBytes * 100).toStringAsFixed(0));
-          //Check if download is complete and close the alert dialog
-          if (receivedBytes == totalBytes) {
+          var download_rate = (receivedBytes / totalBytes * 100).toStringAsFixed(0);
+          print(download_rate);
+           //Check if download is complete and close the alert dialog
+        //    print("${receivedBytes}");
+           if(download_rate.contains("100")){
+               print("if 100 is done");
             loading = false;
             setState(() {
               filePath = path;
             });
+
+           }
+         else{
+             loading = true;
+            Get.defaultDialog(title: "Downloading..." , content: CircularProgressIndicator());
           }
         },
       );
+
+      }catch(e){
+          print("Khaled Error for Download ${e.toString()}");
+      }
+
     } else {
       loading = false;
       setState(() {
