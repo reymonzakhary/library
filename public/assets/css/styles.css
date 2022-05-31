@@ -1,0 +1,276 @@
+
+:root{
+ --primary-color : rgba(159, 64, 32, 1);
+ --secoundry-color : rgba(159, 64, 32,0.6);
+ --selected-color : rgba(159, 64, 32, 0.4);
+
+ --icon-color :rgb(196, 194, 194);
+ --icon-color-selector :rgb(230, 230, 230);
+ --background-color: rgba(240, 239, 239, 0.4):
+ --backgourd-secoundry: rgba(165, 190, 204 ,1);
+ --big-color:rgb(36, 58, 115);
+ --small-color :rgb(124, 62, 102);
+}
+
+body{
+ min-height: 100vh;
+ margin-left: 0%;
+ margin-top: 0%;
+ margin-right: 0%;
+ padding: 0%;
+ overflow-x: hidden;
+}
+
+.container{
+ width: 100%;
+ position: relative;
+ margin-left: 0%;
+ margin-top: 0%;
+ margin-right: 0%;
+ padding: 0%;
+}
+
+.vertical-navigation{
+  position: fixed;
+  width: 200px;
+  height: 100%;
+  background-color: var(--secoundry-color);
+  border-left: 10px solid var(--primary-color);
+  transition: 0.5s;
+  overflow: hidden;
+}
+
+.vertical-navigation ul{
+ position: absolute;
+ top: 10%;
+ left: 0%;
+ right: 0%;
+ width: 100%;
+}
+
+.vertical-navigation ul li{
+position: relative;
+width: 100%;
+list-style: none;
+border-top-left-radius: 30px;
+border-bottom-left-radius: 30px;
+/* pointer-events: none; */
+}
+
+.vertical-navigation ul li:hover {
+    background-color: white;
+   }
+
+
+/* .vertical-navigation ul li a:nth-child(1){
+    position: relative;
+    width: 200%;
+    margin-bottom: 40px;
+    list-style: none;
+    pointer-events: none;
+    } */
+
+.vertical-navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: white;
+}
+
+.vertical-navigation ul li:hover a {
+    /* position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none; */
+    color: var(--selected-color);
+  }
+
+  .vertical-navigation ul li a .icon{
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+}
+
+.vertical-navigation ul li a .icon ion-icon{
+     font-size: 1.75rem;
+
+
+}
+
+.vertical-navigation ul li a .title{
+    position: relative;
+    display: block;
+    padding: 0 10px;
+    height: 60px;
+    line-height: 60px;
+    text-align: start;
+    white-space: nowrap;
+}
+
+.main{
+   position:absolute;
+   width: calc(100% - 200px);
+   left: 210px;
+   min-height: 100vh;
+   transition: 0.5s;
+}
+
+.topbar{
+    width: 100%;
+    height:60px;
+    display: flex;
+    background: rgba(240, 239, 239, 0.6);
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+
+}
+.toggle{
+    position: relative;
+    top: 0;
+    width: 60px;
+    height: 60px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     font-size: 2.5em;
+     cursor: pointer;
+}
+
+.toggle ion-icon{
+    color: var(--primary-color);
+}
+.toggle ion-icon:hover{
+    color: var(--selected-color);
+}
+.search{
+    position: relative;
+    width: 400px;
+    margin: 10;
+}
+.search label{
+    position: relative;
+    width: 100%;
+}
+.search label input{
+    width: 100%;
+    height: 30px;
+    border-radius: 40px;
+    padding: 5px 20px;
+    outline: none;
+    padding-left: 40px;
+    border: 1px solid var(--background-color);
+}
+.search label input:focus{
+    width: 100%;
+    border-radius: 20px;
+    outline: none;
+    border: 1px solid var(--selected-color);
+}
+.search label ion-icon{
+ font-size: 1.3em;
+ position: absolute;
+  top: 0%;
+  left: 10px;
+  color: var(--selected-color);
+
+
+}
+
+.cardBox{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+
+}
+
+.card{
+   position: relative;
+   background: white;
+   padding: 30px;
+   margin: 20px;
+   border-radius: 20px;
+   display: flex;
+   cursor: pointer;
+   justify-content: space-between;
+   box-shadow: 0 7px 10px rgba(192, 192, 192, 0.4);
+
+}
+.numbers{
+    position: relative;
+    font-weight: 500;
+    font-size: 2.5em;
+    color: var(--primary-color);
+}
+
+.cardName{
+    color: var(--big-color);
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+
+.iconCard{
+    color: var(--icon-color);
+    font-size: 2.4em;
+    margin-top: 5px;
+
+}
+
+.card:hover{
+    background: var(--selected-color);
+    border-radius: 5px;
+    justify-content: space-between;
+    box-shadow: 0 7px 10px rgba(192, 192, 192, 0.4);
+
+ }
+ .card:hover .numbers{
+     font-weight: 500;
+     font-size: 2em;
+     color: var(--secoundry-color);
+ }
+
+ .card:hover .cardName{
+     color: white;
+     font-size: 1.6em;
+ }
+
+ .card:hover .iconCard{
+     color: var(--icon-color-selector);
+     font-size: 2em;
+
+ }
+/* boder outside */
+
+/* .vertical-navigation ul li:hover a::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -50px;
+    width: 50px;
+    height: 60px;
+    background: transparent;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 35px 35px 0 10px white;
+}
+.vertical-navigation ul li:hover a::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px -35px 35px 10px white;
+    width: 50px;
+    height: 60px;
+
+} */
+

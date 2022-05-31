@@ -1,0 +1,28 @@
+/* input{
+    border-radius: 5px;
+    border-color: white;
+    height: 28px;
+    width: 300px;
+    outline: none;
+    padding: 5px;
+
+   }
+
+input:focus{
+    border-color: rgba(159, 64, 32, 0.4);
+   } */
+button
+{
+    border-radius: 5px;
+    width: 200px;
+    height: 40px;
+    color: white ;
+    border: none;
+    align-items: center;
+    background-color: rgba(159, 64, 32, 1);
+
+}
+
+hr.dashed {
+    border-top: 3px dashed #bbb;
+  }

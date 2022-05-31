@@ -1,0 +1,22 @@
+.login-form{
+    background-color: white;
+    height: 60%;
+    width: 80%;
+    position: absolute;
+    top: 16%;
+     right: 5%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    display: flex;
+    border-radius: 5px;
+    padding: 24px;
+    box-shadow: 1px 1px 3px 3px grey;
+}   
+input.user-email{
+    background-color: rgba(240, 239, 239, 1);
+    color: rgba(150, 150, 150, 1);
+}
+input.user-pass{
+    background-color: rgba(240, 239, 239, 1);
+    color: rgba(150, 150, 150, 1);
+}

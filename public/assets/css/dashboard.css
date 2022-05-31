@@ -1,0 +1,130 @@
+
+.page{
+    background-color: rgba(226, 226, 226, 1);
+    position:fixed;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+    background-image: url("/assets/images/background.png");
+    align-items: center;
+    justify-content: center;
+
+ }
+
+.nav-board {
+background-color: rgba(159, 64, 32, 0.4);
+position:absolute;
+top:0px;
+width: 10%;
+bottom:0px;
+left:0px;
+color: white;
+padding-left: 30px;
+padding-top: 8px;
+}
+
+.header-bar{
+ background-color: rgba(240, 239, 239, 0.9) ;
+ position:absolute;
+ top:0px;
+ right:0px;
+ padding: 8px;
+ height: 20%;
+ left:0px;
+ margin-left: 8%;
+ border-bottom-right-radius: 50px;
+
+}
+
+.filed-section{
+background-color:transparent;
+margin-top: 16%;
+margin-left: 14%;
+height: 100%;
+width: 100%;
+}
+
+
+.categories-dropdown{
+    width: 300px;
+    height: 32px;
+    padding: 5px;
+    outline: none;
+    border-radius: 5px;
+    border-color: white;
+    background-color: white;
+}
+.button-submit-form{
+    width: 300px;
+    height: 32px;
+    padding: 5px;
+    outline: none;
+    border-radius: 5px;
+    background-color: rgba(159, 64, 32, 1);
+    color: white;
+
+}
+.left-list-fileds{
+    position: absolute;
+    right: 10%;
+    top: 20%;
+    width: 1000px;
+    height: 800px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+
+}
+
+
+.top-fileds{
+    position: absolute;
+    top: 15%;
+    right: 2%;
+    box-shadow: 5px 5px 5px  grey;
+    width: 240px;
+    height: 120px;
+    background-color: white;
+    border-radius: 5px;
+}
+.top-fileds2{
+    position: absolute;
+    top: 15%;
+    right: 16%;
+    box-shadow: 5px 5px 5px  grey;
+    width: 240px;
+    height: 120px;
+    background-color: white;
+    border-radius: 5px;
+}
+.top-fileds3{
+    position: absolute;
+    top: 15%;
+    right: 30%;
+    box-shadow: 5px 5px 5px  grey;
+    width: 240px;
+    height: 120px;
+    background-color: white;
+    border-radius: 5px;
+}
+.top-fileds4{
+    position: absolute;
+    top: 15%;
+    right: 45%;
+    box-shadow: 5px 5px 5px  grey;
+    width: 240px;
+    height: 120px;
+    background-color: white;
+    border-radius: 5px;
+}
+.top-fileds5{
+    position: absolute;
+    top: 15%;
+    right: 60%;
+    box-shadow: 5px 5px 5px  grey;
+    width: 240px;
+    height: 120px;
+    background-color: white;
+    border-radius: 5px;
+}
