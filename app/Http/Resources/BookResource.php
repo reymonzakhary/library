@@ -15,17 +15,18 @@ class BookResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
+            // 'id'=>$this->id,
             'title'=>$this->title,
-            'content'=>$this->content,
             'author'=>$this->author,
+            'content'=>$this->content,
             'rate' => $this->rate,
-            'totalpages' => $this->totalpages,
             'img' => $this->img,
             'audio' => $this->audio,
+            'file' => $this->file,
             'tags' => $this->tags,
-            'categories' => $this->categories,
-           'file' => $this->file,
+            
+            // 'categories' => $this->categories,
+           'totalpages' => $this->totalpages,
 
         ];
     }

@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateBookCloudRequest;
 use App\Models\BookCloud;
 use App\Http\Resources\BookResource;
 use Illuminate\Support\Facades\Request;
+use Illuminate\View\View;
 
 class BookCloudController extends Controller
 {
@@ -22,7 +23,17 @@ class BookCloudController extends Controller
     {
         return BookResource::collection(BookCloud::paginate(10));
     }
+    public function homeBooks()
+    {
 
+    return view('home')->with('books', BookCloud::all());
+    }
+
+    public function postBook(StoreBookCloudRequest $request){
+        $bookCloud = BookCloud::create($request->validated());
+         new BookResource($bookCloud);
+         return view('home');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -33,6 +44,31 @@ class BookCloudController extends Controller
           //
     }
 
+    public function imageUpload()
+    {
+        return view('imageUpload');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function imageUploadPost(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $imageName = time().'.'.$request->image->extension();
+
+        $request->image->move(public_path('images'), $imageName);
+
+        return back()
+            ->with('success','You have successfully upload image.')
+            ->with('image',$imageName);
+
+    }
     /**
      * Store a newly created resource in storage.
      *

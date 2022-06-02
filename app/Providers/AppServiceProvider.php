@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View;
+use App\Models\BookCloud;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+    // View::composer('layout/master' , function($view){
+    //  $view->with('books', BookCloud::all());
+    //      });
     }
 }

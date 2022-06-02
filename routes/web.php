@@ -20,16 +20,14 @@ Route::get('/', function () {
     return view('layout/welcome');
 });
 
-Route::view('/home' , 'home');
 Route::view('/blank' , 'blank');
-Route::view('/admin' , 'dashboard');
-Route::view('/login' , 'login');
 Route::post('/admin-post' ,[BookCloudController::class , 'store'])->name('create-book');
-Route::get('/books-data' ,[BookCloudController::class , 'index'])->name('get-books');
+Route::get('/home' ,[BookCloudController::class , 'homeBooks'])->name('get-web-books');
 
 
 
-
+Route::get('image-upload', 'ImageUploadController@imageUpload')->name('image.upload');
+Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
 
 
 Route::get('/epub', function(){
