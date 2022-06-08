@@ -8,11 +8,11 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
-    <link rel="stylesheet" href={{URL::asset('assets/css/styles.css')}}>
-    <link rel="stylesheet" href={{URL::asset('assets/css/home.css')}}>
-    <link rel="stylesheet" href={{URL::asset('assets/css/blank.css')}}>
+    <link rel="stylesheet" href="{{URL::asset('assets/css/styles.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('assets/css/home.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('assets/css/blank.css')}}">
 
-    <script type="text/javascript" src={{URL::asset('assets/js/master.js')}}></script>
+
 
     <title>@yield('title' , 'master')</title>
 
@@ -85,8 +85,8 @@
 @yield('body')
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script type="text/javascript" src={{asset('assets/js/master.js')}}></script>
 </body>
-
 </html>
 
 

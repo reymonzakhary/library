@@ -21,10 +21,10 @@
        <div class="card">
            <div>
             <div class="numbers">
-                1
+                 {{count( json_decode($books[0]['categories'])) }}
                  </div>
                  <div class="cardName">
-                  Admins
+                  Categories
                  </div>
            </div>
            <div class="iconCard">
@@ -113,10 +113,8 @@
                    @if ($book->tags==null)
                    <td>tags empty</td>
                    @else
-                    <td>tags is not empty</td>
-
+                   <td>{{ json_decode($book->tags)[0] }}</td>
                    @endif
-
 
                   @if ($book->totalpages ==null)
                   <td>0</td>

@@ -24,8 +24,7 @@ class BookResource extends JsonResource
             'audio' => $this->audio,
             'file' => $this->file,
             'tags' => $this->tags,
-            
-            // 'categories' => $this->categories,
+            'categories' => $this->categories,
            'totalpages' => $this->totalpages,
 
         ];

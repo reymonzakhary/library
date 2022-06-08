@@ -64,7 +64,7 @@
                                <ion-icon name="checkmark-done-circle-outline"></ion-icon>
                            </div>
                           <p>*requied</p>
-                        <select id="books" name="books" size="1" class="categories-dropdown">
+                        <select id="books" name="tags-books" size="1" class="categories-dropdown">
                             <option value="comedy">comedy</option>
                             <option value="funny">funny</option>
                             <option value="family">family</option>

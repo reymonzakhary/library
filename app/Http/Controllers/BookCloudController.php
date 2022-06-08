@@ -25,7 +25,7 @@ class BookCloudController extends Controller
     }
     public function homeBooks()
     {
-
+        
     return view('home')->with('books', BookCloud::all());
     }
 

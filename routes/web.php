@@ -19,7 +19,7 @@ use PHPePub\Core\EPub;
 Route::get('/', function () {
     return view('layout/welcome');
 });
-
+Route::view('/login' , 'layout/login');
 Route::view('/blank' , 'blank');
 Route::post('/admin-post' ,[BookCloudController::class , 'store'])->name('create-book');
 Route::get('/home' ,[BookCloudController::class , 'homeBooks'])->name('get-web-books');
