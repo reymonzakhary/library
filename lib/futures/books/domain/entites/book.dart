@@ -29,4 +29,5 @@ abstract class Book extends Equatable {
   @override
   List<Object?> get props =>
       [title, content, author, img, audio, file, totalpages];
+
 }

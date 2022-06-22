@@ -1,4 +1,7 @@
+import 'package:book_store/core/routes/delivery.dart';
+import 'package:book_store/core/routes/delivery_pages.dart';
 import 'package:book_store/core/themes/app_theme.dart';
+import 'package:book_store/futures/books/pressntation/bindings/main_binding.dart';
 import 'package:book_store/futures/books/pressntation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +19,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeApp,
-      home:  HomeScreen(),
+      initialBinding: MainBinding(),
+      getPages: DeliveryPage.pages,
+      initialRoute: Delivery.home,
     );
   }
 }

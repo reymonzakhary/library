@@ -9,7 +9,7 @@ const selectorColor = Color.fromRGBO(159, 64, 32, .4);
 const iconColor = Color.fromRGBO(114, 114, 114, 1);
 
 // text
-const titleTextColor = Colors.black;
+const titleTextColor = Color.fromARGB(255, 3, 35, 61);
 const subtitleTextColor = Color.fromRGBO(50, 46, 46, 1);
 const descriptonTextColor = Color.fromRGBO(143, 138, 138, 1);
 const generalTextColor = Colors.black;
