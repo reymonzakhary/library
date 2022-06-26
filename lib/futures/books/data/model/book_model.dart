@@ -9,6 +9,7 @@ class BookModel extends Book {
       required super.author,
       required super.content,
       required super.totalpages,
+      required super.rate,
       required super.img,
       required super.audio,
       required super.tags,
@@ -20,7 +21,7 @@ class BookModel extends Book {
         title: jsonIteam["title"] ?? "",
         author: jsonIteam["author"] ?? "",
         content: jsonIteam["content"] ?? "",
-        // rate: jsonIteam["rate"],
+        rate: jsonIteam["rate"],
         img: jsonIteam["img"] ?? "",
         audio: jsonIteam["audio"] ?? "",
         tags: json.decode(jsonIteam["tags"]) ?? [],
@@ -34,7 +35,7 @@ class BookModel extends Book {
         "title": book.title,
         "content": book.content,
         "author": book.author,
-        // "rate":    book.rate,
+        "rate": book.rate,
         "totalpages": book.totalpages,
         "img": book.img,
         "audio": book.audio,
@@ -44,5 +45,5 @@ class BookModel extends Book {
 
   @override
   List<Object?> get props =>
-      [title, content, author, img, audio, file, totalpages];
+      [title, content, author, rate, img, audio, file, totalpages];
 }

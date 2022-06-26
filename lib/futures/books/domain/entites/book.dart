@@ -5,7 +5,7 @@ abstract class Book extends Equatable {
   final String title;
   final String content;
   final String author;
-//  final double rate;
+  final dynamic rate;
   final int totalpages;
   final String img;
   final String audio;
@@ -18,7 +18,7 @@ abstract class Book extends Equatable {
       required this.title,
       required this.author,
       required this.content,
-      // required this.rate,
+      required this.rate,
       required this.totalpages,
       required this.img,
       required this.audio,
@@ -28,6 +28,5 @@ abstract class Book extends Equatable {
 
   @override
   List<Object?> get props =>
-      [title, content, author, img, audio, file, totalpages];
-
+      [title, content, author, rate, img, audio, file, totalpages];
 }

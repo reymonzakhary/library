@@ -8,11 +8,10 @@ import '../controllers/books_controller.dart';
 class BooksBinding extends Bindings {
   @override
   void dependencies() {
-    
-    Get.put<RemoteRepositoryBooks>(
-        RemoteRepositoryBooks(dioRemoteDataSource: Get.find()));
-   
-    Get.put<LocalRepositoryBooks>(LocalRepositoryBooks());
+    Get.put<RemoteRepositoryBooks>(RemoteRepositoryBooks(
+        dioRemoteDataSource: Get.find(),
+        checkNetwork: Get.find(),
+        getStorageLocalDataSource: Get.find()));
 
     Get.put<GetBooksUseCases>(
         GetBooksUseCases(remoteRepositoryBooks: Get.find()));
