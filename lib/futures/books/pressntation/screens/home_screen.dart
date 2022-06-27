@@ -10,12 +10,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../../core/constants/strings.dart';
 import '../../../../core/themes/colors.dart';
 import '../../../../core/themes/text_app.dart';
 import '../../domain/entites/book.dart';
 
 class HomeScreen extends CoreScreen<BooksController> {
-  final bookImageHeight = 340.0;
+  final bookImageHeight = 320.0;
   final bookImageWidth = 260.0;
 
   @override
@@ -43,10 +44,22 @@ class HomeScreen extends CoreScreen<BooksController> {
           width: Get.width,
           height: Get.height,
           child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
                 _autoScrollCarouseIteams(books),
-                HorzintalListBooks(books)
+                HorzintalListBooks(
+                  books: books,
+                  title: "Top Viewed",
+                ),
+                HorzintalListBooks(
+                  books: books,
+                  title: "Recent",
+                ),
+                HorzintalListBooks(
+                  books: books,
+                  title: "News",
+                ),
               ],
             ),
           ),
@@ -59,86 +72,18 @@ class HomeScreen extends CoreScreen<BooksController> {
             width: Get.width,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                  colors: [Colors.white, Colors.grey.shade400],
+                  colors: [Colors.white, Colors.grey.shade300],
                   begin: Alignment.bottomRight,
                   end: Alignment.topLeft),
             ),
-            padding: EdgeInsets.only(top: 60, left: 14),
-            child: PageView.builder(
-                controller: controller.pageController,
-                itemCount: controller.books.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: ((context, index) {
-                  final current =
-                      index - controller.notiferPAgeController.value;
-                  final rotate = current.clamp(0.0, 1.0);
-                  final fixRotate = pow(rotate, 0.35);
-                  return Container(
-                    width: Get.width,
-                    padding: EdgeInsets.only(top: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        RotatedBox(
-                          quarterTurns: 1,
-                          child: Opacity(
-                              opacity: 1 - rotate,
-                              child:
-                                  TextApp(books[index].title).titleTextStyle()),
-                        ),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: [
-                        //     Opacity(
-                        //         opacity: 1 - rotate,
-                        //         child: TextApp(books[index].title)
-                        //             .titleTextStyle()),
-                        //     defaultVerticalSpace,
-                        //     Container(
-                        //       width: 140,
-                        //       child: TextApp(books[index].content)
-                        //           .descriptionTextStyle(),
-                        //     )
-                        //   ],
-                        // ),
-                        SizedBox(width: 10),
-                        Stack(
-                          children: [
-                            Container(
-                              width: bookImageWidth,
-                              height: bookImageHeight,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  boxShadow: [
-                                    const BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 20,
-                                        offset: Offset(5.0, 20.0),
-                                        spreadRadius: 10)
-                                  ]),
-                            ),
-                            Transform(
-                              alignment: Alignment.centerLeft,
-                              transform: Matrix4.identity()
-                                ..setEntry(3, 2, 0.002)
-                                ..rotateY(1.8 * fixRotate)
-                                ..translate(-rotate * Get.size.width * 0.8)
-                                ..scale(1 + rotate),
-                              child: Image.network(
-                                books[index].img,
-                                width: bookImageWidth,
-                                height: bookImageHeight,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                })),
+            // padding: EdgeInsets.only(top: 60, left: 14),
           ),
+          Positioned(
+              top: 60,
+              bottom: 0,
+              right: 0,
+              left: 20,
+              child: _buildPageView(books)),
           Positioned(
               left: 0,
               bottom: 0,
@@ -164,10 +109,17 @@ class HomeScreen extends CoreScreen<BooksController> {
               )),
           Positioned(
             bottom: 40,
-            right: 30,
-            child: TextApp(books[controller.notiferPAgeController.value.toInt()]
-                    .author)
-                .subTitleTextStyle3(),
+            right: 10,
+            child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.only(topLeft: Radius.circular(25))),
+                child: Center(
+                    child: TextApp(Strings.splitString20(books[
+                                controller.notiferPAgeController.value.toInt()]
+                            .author))
+                        .subTitleTextStyle3())),
           ),
           Positioned(
               bottom: 10,
@@ -185,28 +137,66 @@ class HomeScreen extends CoreScreen<BooksController> {
                 size: 25,
               )),
           Positioned(
-            bottom: 50,
-            left: 25,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 45,
-                  width: 1,
-                  color: titleTextColor,
-                ),
-                SizedBox(height: 2),
-                Container(
-                  height: 1,
-                  width: 45,
-                  color: primaryColor,
-                ),
-              ],
-            ),
-          )
+              bottom: 50, left: 25, child: _build_ninteAngle_withTwoColors())
         ],
       );
-
+  _buildPageView(List<Book> books) => PageView.builder(
+      controller: controller.pageController,
+      itemCount: controller.books.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: ((context, index) {
+        final current = index - controller.notiferPAgeController.value;
+        final rotate = current.clamp(0.0, 1.0);
+        final fixRotate = pow(rotate, 0.35);
+        return Container(
+          width: Get.width,
+          padding: const EdgeInsets.only(top: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              RotatedBox(
+                quarterTurns: 1,
+                child: Opacity(
+                    opacity: 1 - rotate,
+                    child: TextApp(Strings.splitString50(books[index].title))
+                        .titleTextStyle()),
+              ),
+              SizedBox(width: 10),
+              Stack(
+                children: [
+                  Container(
+                    width: bookImageWidth,
+                    height: bookImageHeight,
+                    decoration:
+                        BoxDecoration(color: Colors.grey.shade200, boxShadow: [
+                      const BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 20,
+                          offset: Offset(5.0, 20.0),
+                          spreadRadius: 10)
+                    ]),
+                  ),
+                  Transform(
+                    alignment: Alignment.centerLeft,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.002)
+                      ..rotateY(1.8 * fixRotate)
+                      ..translate(-rotate * Get.size.width * 0.8)
+                      ..scale(1 + rotate),
+                    child: Image.network(
+                      books[index].img,
+                      width: bookImageWidth,
+                      height: bookImageHeight,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      }));
   _headerHorizntalList(String src, List<Book> books) => SizedBox(
         width: Get.width,
         child: Row(
@@ -229,58 +219,59 @@ class HomeScreen extends CoreScreen<BooksController> {
         children: [
           _headerHorizntalList("Popular", books),
           CarouselSlider.builder(
-              itemCount: controller.books.length,
-              itemBuilder: (context, index, x) {
-                return Container(
-                  width: 220,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: shadowColor),
-                      borderRadius: const BorderRadius.all(Radius.circular(5))),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: iteamsInnerPadding,
-                        width: 120,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextApp(books[index].title).generalTextStyle(
-                                generalTextColor, 10, FontWeight.bold),
-
-                            TextApp(books[index].author).generalTextStyle(
-                                descriptonTextColor, 9, FontWeight.normal),
-                            SizedBox(height: 2),
-                            _rateSection(books[index], 9.0),
-                            // Container(width: 40, child: TextApp(books[index].content).descriptionTextStyle(),)
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(4),
-                                bottomRight: Radius.circular(4)),
-                            child: Image.network(
-                              books[index].img,
-                              fit: BoxFit.fill,
-                            )),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              options: CarouselOptions(
+            itemCount: controller.books.length,
+            itemBuilder: (context, index, x) {
+              return Container(
+                width: 220,
                 height: 100,
-                aspectRatio: 16 / 9,
-                viewportFraction: .5,
-                enlargeCenterPage: true,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 6),
-                pauseAutoPlayInFiniteScroll: true,
-              ))
+                decoration: BoxDecoration(
+                    border: Border.all(color: shadowColor),
+                    borderRadius: const BorderRadius.all(Radius.circular(5))),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: iteamsInnerPadding,
+                      width: 120,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextApp(books[index].title).generalTextStyle(
+                              generalTextColor, 10, FontWeight.bold),
+
+                          TextApp(books[index].author).generalTextStyle(
+                              descriptonTextColor, 9, FontWeight.normal),
+                          SizedBox(height: 2),
+                          _rateSection(books[index], 9.0),
+                          // Container(width: 40, child: TextApp(books[index].content).descriptionTextStyle(),)
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(4),
+                              bottomRight: Radius.circular(4)),
+                          child: Image.network(
+                            books[index].img,
+                            fit: BoxFit.fill,
+                          )),
+                    ),
+                  ],
+                ),
+              );
+            },
+            options: CarouselOptions(
+              height: 100,
+              aspectRatio: 16 / 9,
+              viewportFraction: .5,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              autoPlayInterval: Duration(seconds: 6),
+              pauseAutoPlayInFiniteScroll: true,
+            ),
+          )
         ],
       );
 
@@ -305,6 +296,23 @@ class HomeScreen extends CoreScreen<BooksController> {
           SizedBox(width: 4),
           TextApp("${book.rate}")
               .generalTextStyle(iconColor, size, FontWeight.w400)
+        ],
+      );
+
+  _build_ninteAngle_withTwoColors() => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 45,
+            width: 1,
+            color: titleTextColor,
+          ),
+          SizedBox(height: 2),
+          Container(
+            height: 1,
+            width: 45,
+            color: primaryColor,
+          ),
         ],
       );
 }

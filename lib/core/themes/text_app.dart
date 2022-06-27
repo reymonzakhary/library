@@ -87,6 +87,18 @@ class TextApp {
           wordSpacing: 1.2,
         ),
       ));
+  descriptionTextStyle2() => Text(src,
+      textAlign: TextAlign.start,
+      style: GoogleFonts.roboto(
+        textStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 10,
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.2,
+          wordSpacing: 1.2,
+        ),
+      ));
 
   generalTextStyle(Color color, double size, FontWeight weight) => Text(src,
       textAlign: TextAlign.start,
