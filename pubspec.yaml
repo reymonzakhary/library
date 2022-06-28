@@ -14,47 +14,50 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Network 
-  
+  # Network
+
     # usuing dio to handel and make request connection network
   dio: ^4.0.6
-    # usuing checker to check internet connnection 
+    # usuing checker to check internet connnection
   internet_connection_checker: ^0.0.1+4
 
   # Functionality
-   
+
     # usugin equatable to equatable objectes
-  equatable: ^2.0.3 
+  equatable: ^2.0.3
     # Functional programming in Dart
   dartz: ^0.10.1
-  
-  # Permission 
-      # handel permission of device 
+
+  # Permission
+      # handel permission of device
   permission_handler: any
 
   # Animation , Design UI
 
     # The following adds the Cupertino Icons font to your application.
-  cupertino_icons: ^1.0.2  
-    # usuing google fonts Note:- handeling when lose connection network 
+  cupertino_icons: ^1.0.2
+    # usuing google fonts Note:- handeling when lose connection network
   google_fonts: 2.2.0
-    #  indicator 
+    #  indicator
   smooth_page_indicator: ^1.0.0+2
     #  silder
   carousel_slider: ^4.0.0
     # rating bar
   flutter_rating_bar: ^4.0.0
-    # viewer book with epub 
+    # viewer book with epub
   epub_viewer: ^0.2.5
-   
-  # State Managment 
 
-   # usuing getx and desgin pattren MVC 
+  # State Managment
+
+   # usuing getx and desgin pattren MVC
+  flutter_bloc: ^8.0.1
   get: ^4.6.5
-   # storage local data 
+   # storage local data
   get_storage: ^2.0.3
- 
- 
+  shared_preferences: ^2.0.15
+  #injection
+  get_it: ^7.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,12 +1,14 @@
-import 'package:book_store/core/routes/delivery.dart';
-import 'package:book_store/core/routes/delivery_pages.dart';
-import 'package:book_store/core/themes/app_theme.dart';
-import 'package:book_store/futures/books/pressntation/bindings/main_binding.dart';
-import 'package:book_store/futures/books/pressntation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:book_store/injection/injection_books.dart' as di;
 
-void main() {
+import 'futures/books/presentation/bloc/books_bloc.dart';
+import 'futures/books/presentation/screen/master_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding();
+  // dependince injection of app
+  await di.init();
   runApp(const MyApp());
 }
 
@@ -16,12 +18,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: themeApp,
-      initialBinding: MainBinding(),
-      getPages: DeliveryPage.pages,
-      initialRoute: Delivery.home,
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => di.getIt<BooksBloc>()..add(GetBooks())),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: MasterScreen(),
+        ));
   }
 }

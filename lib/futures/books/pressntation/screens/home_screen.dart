@@ -64,6 +64,7 @@ class HomeScreen extends CoreScreen<BooksController> {
             ),
           ),
         ),
+
       );
 
   _pageView(List<Book> books) => Stack(
@@ -197,6 +198,7 @@ class HomeScreen extends CoreScreen<BooksController> {
           ),
         );
       }));
+
   _headerHorizntalList(String src, List<Book> books) => SizedBox(
         width: Get.width,
         child: Row(
@@ -315,4 +317,6 @@ class HomeScreen extends CoreScreen<BooksController> {
           ),
         ],
       );
+
+
 }
