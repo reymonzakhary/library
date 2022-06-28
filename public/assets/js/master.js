@@ -2,6 +2,8 @@ let toggle = document.querySelector('.toggle');
 let navigator = document.querySelector('.vertical-navigation');
 let main    = document.querySelector('.main');
 
+
+
 function zoom() {
     document.body.style.zoom = "80%"
 }
@@ -20,3 +22,11 @@ function activeLink(){
  }
  list.forEach((iteam)=>iteam.addEventListener('mouseover' ,activeLink));
 
+
+ function alretSuccessAdd (msg){
+    alert(msg);
+ }
+
+ function handelAlretMassege (){
+
+ }

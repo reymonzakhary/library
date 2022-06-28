@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateBookCloudRequest;
 use App\Models\BookCloud;
 use App\Http\Resources\BookResource;
 use Illuminate\Support\Facades\Request;
-use Illuminate\View\View;
 
 class BookCloudController extends Controller
 {
@@ -19,15 +18,60 @@ class BookCloudController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+    // get all books with api
+     public function index()
     {
         return BookResource::collection(BookCloud::paginate(10));
     }
+
+    // get all book to home page from DB
     public function homeBooks()
     {
-        
+
     return view('home')->with('books', BookCloud::all());
     }
+
+    // create or store book in DB
+    public function storeBook(StoreBookCloudRequest $request)
+    {
+
+      BookCloud::create($request->validated());
+       return redirect()->route('get-web-books')->with('success' , 'book was Added');
+    }
+
+    // go to edit view with book object to set data as default
+    public function editBook(BookCloud $book)
+    {
+        return view('edit',['book'=>$book]);
+
+    }
+    // delet book from DB
+    public function deleteBook (BookCloud $bookCloud)
+     {
+        //  dd($bookCloud);
+         $bookCloud->delete();
+         return redirect()->route('get-web-books')->with('success' , 'book was deleted');
+    }
+
+    // edit or update book from DB
+    public function updateBook(UpdateBookCloudRequest $request, BookCloud $bookCloud)
+    {
+        $bookCloud->update([
+            'title' => ($request->title) ? $request->title : $bookCloud->title,
+            'content' => ($request->content) ? $request->content : $bookCloud->content,
+            'author' => ($request->author) ? $request->author:$bookCloud->author,
+            'rate' => ($request->rate) ? $request->rate : $bookCloud->rate,
+            'totalpages' => ($request ->totalpages) ? $request->totalpages : $bookCloud->totalpages,
+            'img' => ($request ->img) ? $request->img : $bookCloud->img,
+            'audio'=> ($request->audio) ? $request->audio : $bookCloud->audio,
+            'tags' => ($request->tags) ? $request->tags : $bookCloud->tags,
+            'file' => ($request->file) ? $request->file : $bookCloud->file,
+        ]);
+
+        return redirect()->route('get-web-books')->with('success' , 'book was updated');
+    }
+
 
     public function postBook(StoreBookCloudRequest $request){
         $bookCloud = BookCloud::create($request->validated());
@@ -43,6 +87,7 @@ class BookCloudController extends Controller
     {
           //
     }
+
 
     public function imageUpload()
     {

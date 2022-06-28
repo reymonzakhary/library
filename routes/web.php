@@ -5,31 +5,25 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 use PHPePub\Core\EPub;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+// main route
 Route::get('/', function () {
     return view('layout/welcome');
 });
+// login and register route
 Route::view('/login' , 'layout/login');
+// route to page add book with blank case
 Route::view('/blank' , 'blank');
-Route::post('/admin-post' ,[BookCloudController::class , 'store'])->name('create-book');
+// route to add book
+Route::post('/admin-post' ,[BookCloudController::class , 'storeBook'])->name('create-book');
+// route to get all books
 Route::get('/home' ,[BookCloudController::class , 'homeBooks'])->name('get-web-books');
+// route to edit book and page to update changes
+Route::get('/edit/{book}' , [BookCloudController::class , "editBook"])->name('edit-book');
+Route::get('/edit-book/{bookCloud}',[BookCloudController::class ,'updateBook'])->name('update-book');
+// route to delete book
+Route::get('/delete-bk/{bookCloud}',[BookCloudController::class ,'deleteBook'])->name('delete-bk');
 
-
-
-Route::get('image-upload', 'ImageUploadController@imageUpload')->name('image.upload');
-Route::post('image-upload', 'ImageUploadController@imageUploadPost')->name('image.upload.post');
-
-
+// route to generate epub file
 Route::get('/epub', function(){
 
     $book = new EPub();

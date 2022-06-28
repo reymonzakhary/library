@@ -15,6 +15,6 @@ class BookCloudSeeder extends Seeder
      */
     public function run()
     {
-        BookCloud::factory(10)->create();
+        BookCloud::factory(50)->create();
     }
 }

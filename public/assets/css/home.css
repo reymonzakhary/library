@@ -7,6 +7,88 @@
     min-height: 100vh;
     transition: 0.5s;
  }
+ .Alert-box{
+     position: absolute;
+     right: 2%;
+      top: 5%;
+     background: var(--secoundry-color);
+     font-size: 20px;
+     padding: 20px;
+     color: white;
+     min-width: 300px ;
+     border-radius: 5px;
+    }
+ .hidden{
+     visibility: hidden;
+ }
+ .Alert-box .close-alret{
+     font-size: 20px;
+      position: absolute;
+      right: 5%;
+      top: 10px;
+      cursor: pointer;
+ }
+ .Alert-box.show::before{
+  content: '';
+  position: absolute;
+  left: 0%;
+  bottom: 0%;
+  height: 4px;
+  background-color: var(--primary-color);
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 11;
+  animation: hideMeter 5s linear;
+
+}
+
+@keyframes hideMeter{
+    0%{
+     width: 100%;
+     }
+    100%{
+      width: 0%;
+    }
+
+}
+
+ .Alert-box.show{
+     animation: showAlert 2s ease forwards;
+
+ }
+ @keyframes showAlert{
+     0%{
+         transform: translateX(100%);
+     }
+     40%{
+         transform: translateX(-15%);
+     }
+     80%{
+         transform: translateX(0%);
+     }
+     100%{
+         transform: translateX(-10%);
+     }
+ }
+
+ .Alert-box.hide{
+    animation: hideAlert 2s ease forwards;
+
+}
+@keyframes hideAlert{
+    0%{
+        transform: translateX(-10%);
+    }
+    40%{
+        transform: translateX(0%);
+    }
+    80%{
+        transform: translateX(-15%);
+    }
+    100%{
+        transform: translateX(106%);
+    }
+}
  .home-main h1{
  color: var(--big-color);
 }
@@ -21,6 +103,18 @@
     grid-template-columns: 5fr 1fr;
     grid-gap: 40px;
 
+}
+.box-table .box-edit{
+    background: white;
+    min-height: 500px;
+    position: relative;
+    padding: 20px;
+    box-shadow: 0px 7px 25px var(--icon-color-selector);
+    justify-items: center;
+    align-items: center;
+    border-radius: 20px;
+    margin-right: 20%;
+    margin-top: 50%;
 }
 .box-table .card-table{
     position: relative;
@@ -58,6 +152,7 @@
 width: 100%;
 border-collapse: collapse;
 margin-top: 10px;
+
 }
 .card-table table thead {
     background: var(--icon-color-selector);
@@ -73,11 +168,47 @@ text-align: start;
 
 .card-table table tbody tr{
     border-bottom: 1px solid var(--selected-color);
-    }
+
+}
+.card-table table tbody {
+    border-collapse: separate;
+     border-spacing: 10px;
+}
 
 .card-table table tbody tr td{
         padding: 12px;
+
+
     }
+
+
+ .Edit {
+    background-color: green;
+    color: white;
+    position: relative;
+    border-radius: 4em;
+     border: 1em solid transparent;
+
+ }
+ .Edit a{
+     color: white;
+     text-decoration: none;
+ }
+
+ .Delete {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 4em;
+    position: relative;
+    border: 1em solid transparent;
+ }
+ .Delete a{
+     color: white;
+     text-decoration: none;
+
+
+ }
+
 .card-table table tbody tr:hover {
  background-color: var(--selected-color);
 color: white;

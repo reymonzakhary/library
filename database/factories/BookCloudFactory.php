@@ -28,7 +28,7 @@ class BookCloudFactory extends Factory
             'categories'=>json_encode($categories),
             'tags' => json_encode($this->faker->randomElements($categories, 3), true),
             'file' => $this->faker->mimeType(),
-            
+
         ];
     }
 }

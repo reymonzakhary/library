@@ -18,9 +18,11 @@ use App\Http\Controllers\BookCloudController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::get('/all-books',[BookCloudController::class ,'index']);
-Route::get('/show-book/{bookCloud}',[BookCloudController::class ,'show']);
-Route::post('/create-book',[BookCloudController::class ,'store']);
-Route::put('/edit-book/{bookCloud}',[BookCloudController::class ,'update']);
-Route::delete('/delete-book/{bookCloud}',[BookCloudController::class ,'destroy']);
+// Route::get('/all-books',[BookCloudController::class ,'index']);
+// Route::get('/show-book/{bookCloud}',[BookCloudController::class ,'show']);
+// Route::post('/create-book',[BookCloudController::class ,'store']);
+// Route::put('/edit-book/{bookCloud}',[BookCloudController::class ,'update']);
+// Route::delete('/delete-book/{bookCloud}',[BookCloudController::class ,'destroy']);
+
+// route api to get all data books  from  apiResource
 Route::apiResource('/books',BookCloudController::class);

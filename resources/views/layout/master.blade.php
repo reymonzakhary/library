@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{URL::asset('assets/css/styles.css')}}">
     <link rel="stylesheet" href="{{URL::asset('assets/css/home.css')}}">
     <link rel="stylesheet" href="{{URL::asset('assets/css/blank.css')}}">
+    <script type="text/javascript" src={{URL::asset('assets/js/master.js')}}></script>
 
 
 
