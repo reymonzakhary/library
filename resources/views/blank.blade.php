@@ -67,13 +67,13 @@
                         <ion-icon name="checkmark-done-circle-outline"></ion-icon>
                     </div><br>
 
-                    <select id="books" name="tags-books" size="1" class="categories-dropdown">
-                        <option value="comedy">comedy</option>
-                        <option value="funny">funny</option>
-                        <option value="family">family</option>
+                    <select id="books" name="category_id" size="1" class="categories-dropdown">
+                        <option value="1">Drama</option>
+                        <option value="2">Science Fiction</option>
+                        <!-- <option value="family">family</option>
                         <option value="action">action</option>
                         <option value="drama">drama</option>
-                        <option value="fantacy">fantacy</option>
+                        <option value="fantacy">fantacy</option> -->
                     </select><br><br>
                     <div class="header-input">
                         <div class="title-label">

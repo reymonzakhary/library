@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookCloudRequest;
 use App\Http\Requests\UpdateBookCloudRequest;
-
 // use Illuminate\Http\Request;
-
 use App\Models\BookCloud;
 use App\Http\Resources\BookResource;
 use Illuminate\Support\Facades\Request;
@@ -28,14 +26,13 @@ class BookCloudController extends Controller
     // get all book to home page from DB
     public function homeBooks()
     {
-
     return view('home')->with('books', BookCloud::all());
     }
 
     // create or store book in DB
     public function storeBook(StoreBookCloudRequest $request)
     {
-
+        
       BookCloud::create($request->validated());
        return redirect()->route('get-web-books')->with('success' , 'book was Added');
     }

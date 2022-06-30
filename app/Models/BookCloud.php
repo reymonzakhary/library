@@ -18,8 +18,18 @@ class BookCloud extends Model
         'totalpages',
         'img',
         'audio',
-        'categories',
         'tags',
         'file',
+        'category_id'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // public function scopeFilter($query, QueryFilter $filters)
+    // {
+    //     return $filters->apply($query);
+    // }
 }

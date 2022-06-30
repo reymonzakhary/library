@@ -29,6 +29,7 @@ class StoreBookCloudRequest extends FormRequest
             'content' => 'nullable',
             'rate' => 'nullable',
             'totalpages' => 'nullable',
+            'category_id' => 'nullable',
             'img' => 'nullable',
             'audio' => 'nullable',
             'tags' => 'nullable',

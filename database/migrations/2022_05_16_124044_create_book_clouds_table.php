@@ -15,7 +15,7 @@ return new class extends Migration
     {
 
         Schema::create('book_clouds', function (Blueprint $table) {
-            $categories = ['Comedy','Funny','Family','Drama','Action and Adventure','senice','futures','programing','Classics','Comic Book or Graphic Novel','Historical Fiction','Fantasy','Detective and Mystery'];
+            // $categories = ['Comedy','Funny','Family','Drama','Action and Adventure','senice','futures','programing','Classics','Comic Book or Graphic Novel','Historical Fiction','Fantasy','Detective and Mystery'];
 
             $table->id();
             $table->string('title');
@@ -26,8 +26,9 @@ return new class extends Migration
             $table->string('img')->nullable();
             $table->string('audio')->nullable();
             $table->text("tags")->nullable();
-            $table->string('file')->nullable();
-            $table->text("categories")->nullable();
+            $table->string('file')->nullable();  
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            // $table->text("categories")->nullable();
             $table->timestamps();
         });
     }

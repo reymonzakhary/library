@@ -13,15 +13,15 @@
             <div class="card">
                 <div>
                     <div class="numbers">
-                        @if (count($books) > 0)
-                            {{ count($books) }}
+                        @if (count($categories) > 0)
+                            {{ count($categories) }}
                         @else
                             0
                         @endif
 
                     </div>
                     <div class="cardName">
-                        Books
+                    categories
                     </div>
                 </div>
                 <div class="iconCard">
@@ -32,10 +32,10 @@
             <div class="card">
                 <div>
                     <div class="numbers">
-                        {{-- @if ($books[0] == null) --}}
+                        {{-- @if ($catiegories[0] == null) --}}
                         0
                         {{-- @else
-                   {{count( json_decode($books[0]['categories'])) }}
+                   {{count ($categories) }}
                   @endif --}}
                     </div>
                     <div class="cardName">
@@ -71,79 +71,26 @@
                     <thead>
                         <tr>
                             <td>Title</td>
-                            <td>Authors</td>
-                            <td>Description</td>
-                            <td>Rate</td>
-                            <td>Cover</td>
-                            <td>Audio</td>
-                            <td>File</td>
-                            <td>Categories</td>
-                            <td>Total pages</td>
-                            <td>Published Date</td>
-
                             <td> </td><br>
                             <td> </td>
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach ($books as $book)
+                        @foreach ($categories as $category)
                             <tr>
-                                <td><span class="title-book">{{ $book->title }}</span></td>
+                                <td><span class="title-category">{{ $category->title }}</span></td>
 
-                                <td>{{ $book->author }}</td>
-
-                                <td>{{ Str::substr($book->content, 0, 20) }}...</td>
-
-                                @if ($book->rate == null)
-                                    <td>0</td>
-                                @else
-                                    <td>{{ $book->rate }}</td>
-                                @endif
-
-
-                                @if ($book->img == null)
-                                    <td>https://via.placeholder.com/50x80.png/0000cc?text=animals+est</td>
-                                @else
-                                    <td>{{ $book->img }}</td>
-                                @endif
-
-
-                                @if ($book->audio == null)
-                                    <td>audio</td>
-                                @else
-                                    <td>{{ $book->audio }}</td>
-                                @endif
-
-
-                                @if ($book->file == null)
-                                    <td>file</td>
-                                @else
-                                    <td>{{ $book->file }}</td>
-                                @endif
-
-
-                                @if ($book->category_id == null)
-                                    <td>tags empty</td>
-                                @else
-                                    <td>{{ ($book->category['title']) }}</td>
-                                @endif
-
-                                @if ($book->totalpages == null)
-                                    <td>0</td>
-                                @else
-                                    <td>{{ $book->totalpages }}</td>
-                                @endif
-                                <td>{{ $book->created_at }}</td>
+                                <td>{{ $category->created_at}}</td>
 
                                 <td class="Edit">
-                                    <a href="{{ route('edit-book', ['book' => $book]) }}">
+                                    <a href="{{ route('categories.update', ['category' => $category]) }}">
                                         <span>Edit</span>
                                     </a>
                                 </td>
                                 @method('delete')
                                 <td class="Delete">
-                                    <a href="{{ route('delete-bk', ['bookCloud' => $book]) }}">Delete</a>
+                                    <a href="{{ route('categories.destroy', ['category' => $category]) }}">Delete</a>
                                 </td>
                             </tr>
                         @endforeach

@@ -25,8 +25,9 @@ class BookCloudFactory extends Factory
             'totalpages' => $this->faker->randomNumber(3,true),
             'img' => $this->faker->imageUrl(50,80,'animals', true),
             'audio' => $this->faker->fileExtension(),
-            'categories'=>json_encode($categories),
-            'tags' => json_encode($this->faker->randomElements($categories, 3), true),
+            'category_id' =>'1',
+            // 'categories'=>json_encode($categories),
+            // 'tags' => json_encode($this->faker->randomElements($categories, 3), true),
             'file' => $this->faker->mimeType(),
 
         ];
