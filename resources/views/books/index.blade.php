@@ -32,11 +32,7 @@
             <div class="card">
                 <div>
                     <div class="numbers">
-                        {{-- @if ($books[0] == null) --}}
-                        0
-                        {{-- @else
-                   {{count( json_decode($books[0]['categories'])) }}
-                  @endif --}}
+ 
                     </div>
                     <div class="cardName">
                         Categories
@@ -65,7 +61,7 @@
             <div class="card-table">
                 <div class="cardHeader">
                     <h2>Book Table</h2>
-                    <a href="#" class="btn">View ALL</a>
+                    <a href="/home" class="btn">View ALL</a>
                 </div>
                 <table>
                     <thead>
@@ -77,7 +73,7 @@
                             <td>Cover</td>
                             <td>Audio</td>
                             <td>File</td>
-                            <td>Categories</td>
+                            <td>Category</td>
                             <td>Total pages</td>
                             <td>Published Date</td>
 
@@ -149,7 +145,9 @@
                         @endforeach
                     </tbody>
                 </table>
+
             </div>
+
             <div class="box-edit">
                 <table>
                     <thead>
@@ -168,10 +166,12 @@
                 </table>
 
             </div>
-
+        
         </div>
+        
     </div>
     </div>
+
     <script>
         const btn = document.querySelector('.btn_alret');
         const alertBox = document.querySelector('.Alert-box');

@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookCloudRequest;
 use App\Http\Requests\UpdateBookCloudRequest;
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Models\BookCloud;
 use App\Http\Resources\BookResource;
-use Illuminate\Support\Facades\Request;
+// use Illuminate\Support\Facades\Request;
 
 class BookCloudController extends Controller
 {
@@ -26,8 +26,30 @@ class BookCloudController extends Controller
     // get all book to home page from DB
     public function homeBooks()
     {
-    return view('home')->with('books', BookCloud::all());
+        // $books = BookCloud::paginate(15);
+        return view('books.index')->with('books', BookCloud::all());
     }
+
+    public function searchBooks(Request $value)
+    {
+        $query = BookCloud::query();
+        $columns = ['title', 'author', 'content'];
+        foreach($columns as $column){
+        $query->orWhere($column, 'LIKE', '%' . $value->value . '%')
+              ->orWhereHas('category', function($q) use ($value, $column)
+        {
+            $q->where($column, 'LIKE', '%'.$value->value.'%');
+        });
+        }
+        $books = $query->get();
+        // if(count($books) > 0)
+        return view('books.search')->with('books', $books);
+        // else return view ('books.searchBook')->withMessage('No Details found. Try to search again !');
+        // return $books;  
+        // return view('home')->with($books);
+    }
+
+
 
     // create or store book in DB
     public function storeBook(StoreBookCloudRequest $request)
@@ -73,7 +95,7 @@ class BookCloudController extends Controller
     public function postBook(StoreBookCloudRequest $request){
         $bookCloud = BookCloud::create($request->validated());
          new BookResource($bookCloud);
-         return view('home');
+         return view('books.index');
     }
     /**
      * Show the form for creating a new resource.
