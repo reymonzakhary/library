@@ -26,27 +26,13 @@ class BookCloudController extends Controller
     // get all book to home page from DB
     public function homeBooks()
     {
-        // $books = BookCloud::paginate(15);
         return view('books.index')->with('books', BookCloud::all());
     }
 
-    public function searchBooks(Request $value)
+    public function searchBooks(Request $request)
     {
-        $query = BookCloud::query();
-        $columns = ['title', 'author', 'content'];
-        foreach($columns as $column){
-        $query->orWhere($column, 'LIKE', '%' . $value->value . '%')
-              ->orWhereHas('category', function($q) use ($value, $column)
-        {
-            $q->where($column, 'LIKE', '%'.$value->value.'%');
-        });
-        }
-        $books = $query->get();
-        // if(count($books) > 0)
+        $books = BookCloud::search($request)->get();
         return view('books.search')->with('books', $books);
-        // else return view ('books.searchBook')->withMessage('No Details found. Try to search again !');
-        // return $books;  
-        // return view('home')->with($books);
     }
 
 

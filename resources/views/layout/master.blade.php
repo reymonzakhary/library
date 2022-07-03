@@ -73,7 +73,7 @@
            <div class="toggle" >
             <ion-icon name="grid-outline"></ion-icon>
            </div>
-           <form action="/search" method="POST" role="search">
+           <form action="/home" method="POST" role="search">
            {{ csrf_field() }}
            <div class="search">
                <label>

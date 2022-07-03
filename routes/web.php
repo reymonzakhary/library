@@ -25,7 +25,7 @@ Route::get('/edit-book/{bookCloud}', [BookCloudController::class, 'updateBook'])
 Route::get('/delete-bk/{bookCloud}', [BookCloudController::class, 'deleteBook'])->name('delete-bk');
 // Route::get('/index', [BookCloudController::class, 'index']);
 
-Route::post('/search', [BookCloudController::class, 'searchBooks'])->name('search.book');
+Route::post('/home', [BookCloudController::class, 'searchBooks'])->name('search.book');
 
 //categories
 Route::resource('/categories', CategoryController::class);

@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Searchable;
 
 class BookCloud extends Model
 {
 
     use HasFactory;
+    use Searchable;
 
     protected $fillable = [
         'title',
@@ -28,8 +30,9 @@ class BookCloud extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // public function scopeFilter($query, QueryFilter $filters)
-    // {
-    //     return $filters->apply($query);
-    // }
+    public function scopeSearch($value)
+    {
+        return 'okay';
+        return $value;
+    }
 }
