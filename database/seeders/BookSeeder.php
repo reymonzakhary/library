@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\BookCloud;
+use App\Models\Book;
 
-class BookCloudSeeder extends Seeder
+class BookSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,6 @@ class BookCloudSeeder extends Seeder
      */
     public function run()
     {
-        BookCloud::factory(50)->create();
+        Book::factory(50)->create();
     }
 }

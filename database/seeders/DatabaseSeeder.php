@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // BookDataSeeder::class
             // \App\Models\User::factory(10)->create();
-            BookCloudSeeder::class,
+            BookSeeder::class,
         ]);
     }
 }

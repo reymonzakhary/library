@@ -27,13 +27,13 @@
     <div class="vertical-navigation">
         <ul>
             <li>
-                <a href="/home">
+                <a href="{{route('books.index')}}">
                     <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                     <span class="title">Home</span>
                     </a>
             </li>
             <li>
-                <a href="/blank">
+                <a href="{{route('books.create')}}">
                     <span class="icon"><ion-icon name="add-circle-outline"></ion-icon></span>
                     <span class="title">Blank</span>
                     </a>
@@ -47,7 +47,14 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="{{route('categories.index')}}">
+                    <span class="icon"><ion-icon name="albums-outline"></ion-icon></span>
+                    <span class="title">Categories</span>
+                    </a>
+            </li>
+
+            <li>
+                <a href="/epub">
                     <span class="icon"><ion-icon name="book-outline"></ion-icon></span>
                     <span class="title">Epub</span>
                     </a>
@@ -73,7 +80,7 @@
            <div class="toggle" >
             <ion-icon name="grid-outline"></ion-icon>
            </div>
-           <form action="/home" method="POST" role="search">
+           <form action="{{route('search.book')}}" method="POST" role="search">
            {{ csrf_field() }}
            <div class="search">
                <label>

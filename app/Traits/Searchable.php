@@ -12,16 +12,16 @@ trait Searchable
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function scopeSearch($query, $request ,$columns = null)
+    protected function search($query, $value ,$columns = null)
     { 
         // search logic...
         $query = BookCloud::query();
         $columns = ['title', 'author', 'content'];
         foreach($columns as $column){
-        $query->orWhere($column, 'LIKE', '%' . $request->value . '%')
-              ->orWhereHas('category', function($q) use ($request, $column)
+        $query->orWhere($column, 'LIKE', '%' . $value . '%')
+              ->orWhereHas('category', function($q) use ($value, $column)
         {
-            $q->where($column, 'LIKE', '%'.$request->value.'%');
+            $q->where($column, 'LIKE', '%'.$value.'%');
         });
         }
         return $query->get();

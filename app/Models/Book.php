@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Searchable;
 
-class BookCloud extends Model
+class Book extends Model
 {
-
     use HasFactory;
     use Searchable;
 
@@ -41,6 +40,4 @@ class BookCloud extends Model
         });   
         }
     }
-
-
 }

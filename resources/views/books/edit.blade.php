@@ -9,7 +9,7 @@
          @if($errors->any())
             {{ implode('', $errors->all('<div>:message</div>')) }}
              @endif
-                 <form class="form" action="{{ route('update-book' , ['bookCloud' => $book]) }}">
+                 <form class="form"action="{{route('books.update', ['book' => $book])}}" method="put">
                       {{-- {{ csrf_field() }} --}}
                     @csrf
                              <div class="header-input">

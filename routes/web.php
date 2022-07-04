@@ -1,35 +1,33 @@
 <?php
 
-use App\Http\Controllers\BookCloudController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\Api\BookControllers;
 use App\Http\Controllers\CategoryController;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 use PHPePub\Core\EPub;
 
-// main route
 Route::get('/', function () {
     return view('layout/welcome');
 });
-// login and register route
+
+
 Route::view('/login', 'layout/login');
-// route to page add book with blank case
-Route::view('/blank', 'blank');
-// route to add book
-Route::post('/admin-post', [BookCloudController::class, 'storeBook'])->name('create-book');
-// route to get all books
-Route::get('/home', [BookCloudController::class, 'homeBooks'])->name('get-web-books');
-// route to edit book and page to update changes
-Route::get('/edit/{book}', [BookCloudController::class, "editBook"])->name('edit-book');
-Route::get('/edit-book/{bookCloud}', [BookCloudController::class, 'updateBook'])->name('update-book');
-// route to delete book
-Route::get('/delete-bk/{bookCloud}', [BookCloudController::class, 'deleteBook'])->name('delete-bk');
-// Route::get('/index', [BookCloudController::class, 'index']);
 
-Route::post('/home', [BookCloudController::class, 'searchBooks'])->name('search.book');
+Route::group(['prefix' => '/admin'], function () {
+    //books
+    Route::resource('/books', BookController::class);
+    Route::post('/books/search', [BookController::class, 'index'])->name('search.book');
 
-//categories
-Route::resource('/categories', CategoryController::class);
+    //categories
+    Route::resource('/categories', CategoryController::class);
+});
 
+Route::group(['prefix' => '/api'], function () {
+    Route::get('books', [BookControllers::class, 'index']);
+    Route::get('book/{id}', [BookControllers::class, 'show']);
+});
+
+// Auth::routes();
 // route to generate epub file
 Route::get('/epub', function () {
 
@@ -80,8 +78,3 @@ Route::get('/epub', function () {
     $book->sendBook("ExampleBook1");
     return $viewer;
 });
-
-
-Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

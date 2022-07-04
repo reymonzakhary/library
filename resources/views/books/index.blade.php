@@ -61,7 +61,7 @@
             <div class="card-table">
                 <div class="cardHeader">
                     <h2>Book Table</h2>
-                    <a href="/home" class="btn">View ALL</a>
+                    <a href="{{route('books.index')}}" class="btn">View ALL</a>
                 </div>
                 <table>
                     <thead>
@@ -133,13 +133,16 @@
                                 <td>{{ $book->created_at }}</td>
 
                                 <td class="Edit">
-                                    <a href="{{ route('edit-book', ['book' => $book]) }}">
+                                    <a href="{{ route('books.edit', ['book' => $book]) }}">
                                         <span>Edit</span>
                                     </a>
                                 </td>
-                                @method('delete')
                                 <td class="Delete">
-                                    <a href="{{ route('delete-bk', ['bookCloud' => $book]) }}">Delete</a>
+                                <form method="post" class="delete_form" action="{{ route('books.destroy', ['book' => $book])}}" >
+                                {{ method_field('DELETE') }}
+                                {{  csrf_field() }}
+                                <button type="submit" class="btn btn-danger">{{ trans('Delete') }}</button>
+                             </form>
                                 </td>
                             </tr>
                         @endforeach

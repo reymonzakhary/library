@@ -13,10 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-
-        Schema::create('book_clouds', function (Blueprint $table) {
-            // $categories = ['Comedy','Funny','Family','Drama','Action and Adventure','senice','futures','programing','Classics','Comic Book or Graphic Novel','Historical Fiction','Fantasy','Detective and Mystery'];
-
+        Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('author');
@@ -28,7 +25,6 @@ return new class extends Migration
             $table->text("tags")->nullable();
             $table->string('file')->nullable();  
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            // $table->text("categories")->nullable();
             $table->timestamps();
         });
     }
@@ -40,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('book_clouds');
+        Schema::dropIfExists('books');
     }
 };

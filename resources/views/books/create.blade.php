@@ -9,7 +9,7 @@
                 @if ($errors->any())
                     {{ implode('', $errors->all('<div>:message</div>')) }}
                 @endif
-                <form class="form" action="{{ route('create-book') }}" method='post'>
+                <form class="form" action="{{route('books.store')}}" method='post'>
                     {{-- {{ csrf_field() }} --}}
                     @csrf
                     {{-- title book filed --}}
