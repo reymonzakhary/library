@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
-use App\Http\Resources\BookResource;
-use App\Http\Requests\StoreBookCloudRequest;
-use App\Http\Requests\UpdateBookCloudRequest;
-
+use App\Http\Requests\BookRequest;
+use App\Models\Category;
+use App\Services\EpubService;
 class BookController extends Controller
 {
     /**
@@ -30,7 +29,8 @@ class BookController extends Controller
     public function create()
     {
         //
-        return view('books.create');
+        $categories = Category::all();
+        return view('books.create')->with('categories', $categories);
     }
 
     /**
@@ -39,11 +39,29 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBookCloudRequest $request)
+    public function store(BookRequest $request)
     {
         //
-        $books = Book::create($request->validated());
-        return redirect()->route('books.index')->with('success' , 'book was added');
+        $book = Book::create($request->validated());
+        if($request->file('file')) {
+            $fileName = time().'_'.$request->file->getClientOriginalName();
+            $filePath = $request->file('file')->storeAs('uploads/files', $fileName, 'public');
+            $request->file = time().'_'.$request->file->getClientOriginalName();
+            $request->file_path = '/storage/' . $filePath;
+        }
+        if($request->file('audio')) {
+            $fileName = time().'_'.$request->audio->getClientOriginalName();
+            $filePath = $request->file('audio')->storeAs('uploads/audio', $fileName, 'public');
+            $request->file = time().'_'.$request->audio->getClientOriginalName();
+            $request->file_path = '/storage/' . $filePath;
+        }
+        if($request->file('img')) {
+            $fileName = time().'_'.$request->img->getClientOriginalName();
+            $filePath = $request->file('img')->storeAs('uploads/imgs', $fileName, 'public');
+            $request->file = time().'_'.$request->img->getClientOriginalName();
+            $request->file_path = '/storage/' . $filePath;
+        }
+        return redirect()->route('books.index')->with('success', 'book was added');
     }
 
     /**
@@ -76,7 +94,7 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBookCloudRequest $request, Book $book)
+    public function update(BookRequest $request, Book $book)
     {
         //
         $book->update([
@@ -104,5 +122,12 @@ class BookController extends Controller
         //
         $book->delete();
         return redirect()->route('books.index', ['book' => $book])->with('success', 'book was deleted');
+    }
+
+    public function convert(EpubService $epub)
+    {
+        //
+        $epubTest = $epub->convertToEpub();
+        return $epubTest;   
     }
 }

@@ -1,41 +1,21 @@
 <?php
 
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\Api\BookControllers;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\UploadController;
-use Illuminate\Support\Facades\Route;
+namespace App\Services;
+
+use App\Models\Book;
+use Illuminate\Http\Request;
 use PHPePub\Core\EPub;
 
-Route::get('/', function () {
-    return view('layout/welcome');
-});
 
+class EpubService
+{
 
-Route::view('/login', 'layout/login');
-
-Route::group(['prefix' => '/admin'], function () {
-    //books
-    Route::resource('/books', BookController::class);
-    Route::post('/books/search', [BookController::class, 'index'])->name('search.book');
-    Route::post('/books/uploadfile', [UploadController::class, 'uploadFile'])->name('upload.file');
-    //categories
-    Route::resource('/categories', CategoryController::class);
-});
-
-Route::group(['prefix' => '/api'], function () {
-    Route::get('books', [BookControllers::class, 'index']);
-    Route::get('book/{id}', [BookControllers::class, 'show']);
-});
-Route::get('/epub', [BookController::class, 'convert']);
-
-// Auth::routes();
-// route to generate epub file
-Route::get('/epu2b', function () {
-
+    public function convertToEpub()
+    {
+        
     $book = new EPub();
     $content_start =
-        "<?xml "
+        "<?xml version='1.0' encoding='utf-8'?>"
         . "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n"
         . "    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n"
         . "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
@@ -79,4 +59,5 @@ Route::get('/epu2b', function () {
     //   $book->finalize();
     $book->sendBook("ExampleBook1");
     return $viewer;
-});
+}
+}
