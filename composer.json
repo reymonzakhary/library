@@ -7,10 +7,13 @@
     "require": {
         "php": "^8.0.2",
         "grandt/phpepub": "4.0.7.1",
+        "gufy/pdftohtml-php": "~2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.11",
         "laravel/sanctum": "^2.14.1",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "pelago/emogrifier": "^6.0",
+        "tonchik-tm/pdf-to-html": "~1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

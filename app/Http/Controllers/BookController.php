@@ -103,6 +103,7 @@ class BookController extends Controller
             'author' => $request->author,
             'rate' => $request->rate,
             'totalpages' => $request->totalpages,
+            'category_id' => $request->category_id,
             'img' => $request->img,
             'audio' => $request->audio,
             'tags' => $request->tags,
@@ -127,7 +128,7 @@ class BookController extends Controller
     public function convert(EpubService $epub)
     {
         //
-        $epubTest = $epub->convertToEpub();
-        return $epubTest;   
+        $htmlTest = $epub->convertToHtml();
+        return $htmlTest;   
     }
 }

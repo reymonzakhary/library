@@ -3,7 +3,6 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\Api\BookControllers;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 use PHPePub\Core\EPub;
 
@@ -11,14 +10,13 @@ Route::get('/', function () {
     return view('layout/welcome');
 });
 
-
+Auth::routes();
 Route::view('/login', 'layout/login');
 
 Route::group(['prefix' => '/admin'], function () {
     //books
     Route::resource('/books', BookController::class);
     Route::post('/books/search', [BookController::class, 'index'])->name('search.book');
-    Route::post('/books/uploadfile', [UploadController::class, 'uploadFile'])->name('upload.file');
     //categories
     Route::resource('/categories', CategoryController::class);
 });
@@ -29,7 +27,6 @@ Route::group(['prefix' => '/api'], function () {
 });
 Route::get('/epub', [BookController::class, 'convert']);
 
-// Auth::routes();
 // route to generate epub file
 Route::get('/epu2b', function () {
 
