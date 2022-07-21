@@ -6,7 +6,7 @@
     <div class=form-blank>
         <div class="form-infromation">
             {{-- list of fileds information  --}}
-            <form action="{{route('books.update', ['book' => $book])}}" method="POST" class="form">
+            <form action="{{route('books.update', ['book' => $book])}}" method="POST" enctype="multipart/form-data" class="form">
                 @method('PATCH')
                 @csrf
                 <div class="header-input">
@@ -88,17 +88,49 @@
                     </div>
                     <ion-icon name="checkmark-done-circle-outline"></ion-icon>
                 </div>
-                <p>*requied</p>
                 </label>
                 @if ($book->file == null)
-
                 <input type="file" id="b-file" name="file" placeholder="upload file">
                 @else
                 <label>{{ $book->file }}</label>
                 <input type="file" id="b-file" name="file">
                 @endif
+                <div class="header-input">
+                    <div class="title-label">
+                        <i>
+                            <ion-icon name="copy-outline"></ion-icon>
+                        </i>
+                        <label>audio</label>
+                    </div>
+                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+                </div>
+                </label>
+                @if ($book->audio == null)
+                <input type="file" id="b-audio" name="audio" placeholder="upload audio">
+                @else
+                <label>{{ $book->audio }}</label>
+                <input type="file" id="b-audio" name="audio">
+                @endif
+                <div class="header-input">
+                    <div class="title-label">
+                        <i>
+                            <ion-icon name="copy-outline"></ion-icon>
+                        </i>
+                        <label>Image</label>
+                    </div>
+                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+                </div>
+                </label>
+                @if ($book->img == null)
+                <input type="file" id="b-img" name="img" placeholder="upload image">
+                <img src="{{ storage_path().'/images/'.$book->img }}" alt="" title=""></a>
+                @else
+                <label>{{ $book->img }}</label>
+                <input type="file" id="b-img" name="img">
+                @endif
                 <input type="submit" value="Save and Containue" class="submit-form" />
-                </form>
+
+            </form>
             <div class="container">
 
                 <div class="panel panel-primary">
@@ -122,12 +154,12 @@
                         </div>
                         @endif
 
+                    </div>
                 </div>
             </div>
+
         </div>
 
     </div>
-
-</div>
 </div>
 @stop

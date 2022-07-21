@@ -17,7 +17,6 @@ class BookController extends Controller
     public function index(Request $value)
     {
         $books = Book::with('category')->search($value)->get();
-        // return view('books.index')->with('books', BookCloud::all());
         return view('books.index')->with('books', $books);
     }
 
@@ -125,10 +124,24 @@ class BookController extends Controller
         return redirect()->route('books.index', ['book' => $book])->with('success', 'book was deleted');
     }
 
-    public function convert(EpubService $epub)
+    public function convertEpub(EpubService $epub)
     {
         //
-        $htmlTest = $epub->convertToHtml();
+        $epubTest = $epub->convert();
+        return $epubTest;   
+    }
+
+    public function convertHtml(EpubService $epub)
+    {
+        //
+        $htmlTest = $epub->htmlConverter();
         return $htmlTest;   
+    }
+
+    public function updateHtml(EpubService $epub, Request $request)
+    {
+        //
+        $updateHtml = $epub->chapterSeparator($request);
+        return $updateHtml;   
     }
 }

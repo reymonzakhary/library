@@ -25,7 +25,9 @@ Route::group(['prefix' => '/api'], function () {
     Route::get('books', [BookControllers::class, 'index']);
     Route::get('book/{id}', [BookControllers::class, 'show']);
 });
-Route::get('/epub', [BookController::class, 'convert']);
+Route::get('/epub', [BookController::class, 'convertEpub']);
+Route::get('/html', [BookController::class, 'convertHtml']);
+Route::post('/html', [BookController::class, 'updateHtml'])->name('update.html');
 
 // route to generate epub file
 Route::get('/epu2b', function () {
@@ -34,7 +36,7 @@ Route::get('/epu2b', function () {
     $content_start =
         "<?xml "
         . "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n"
-        . "    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n"
+        . "\"http://www.w3.org/TR/xhtml11\">\n"
         . "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
         . "<head>"
         . "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
@@ -73,7 +75,7 @@ Route::get('/epu2b', function () {
         'bookEnd' => $bookEnd
     ],)->render();
     $book->addChapter("Chapter 1", $chapter1, true);
-    //   $book->finalize();
+    $book->finalize();
     $book->sendBook("ExampleBook1");
     return $viewer;
 });
