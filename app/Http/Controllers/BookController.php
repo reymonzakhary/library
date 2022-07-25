@@ -16,7 +16,7 @@ class BookController extends Controller
      */
     public function index(Request $value)
     {
-        $books = Book::with('category')->search($value)->get();
+        $books = Book::with('category')->search($value)->orderBy('created_at','desc')->get();
         return view('books.index')->with('books', $books);
     }
 

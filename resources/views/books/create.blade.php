@@ -35,7 +35,7 @@
 
                     <div class="input-box">
                         <input type="text" id="b-author" name="author" required="required">
-                        <span>Author Book</span>
+                        <span>Author</span>
                     </div><br>
                     <br>
                     @if ($errors->has('author'))
