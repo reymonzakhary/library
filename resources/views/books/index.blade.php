@@ -32,7 +32,7 @@
             <div class="card">
                 <div>
                     <div class="numbers">
- 
+
                     </div>
                     <div class="cardName">
                         Categories
@@ -169,9 +169,9 @@
                 </table>
 
             </div>
-        
+
         </div>
-        
+
     </div>
     </div>
 

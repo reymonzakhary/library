@@ -1,101 +1,119 @@
-.home-main{
-    position:relative;
+.home-main {
+    position: relative;
     width: calc(100% - 200px);
     left: 210px;
-    top:60px;
+    top: 60px;
     padding: 16px;
     min-height: 100vh;
     transition: 0.5s;
- }
- .Alert-box{
-     position: absolute;
-     right: 2%;
-      top: 5%;
-     background: var(--secoundry-color);
-     font-size: 20px;
-     padding: 20px;
-     color: white;
-     min-width: 300px ;
-     border-radius: 5px;
-    }
- .hidden{
-     visibility: hidden;
- }
- .Alert-box .close-alret{
-     font-size: 20px;
-      position: absolute;
-      right: 5%;
-      top: 10px;
-      cursor: pointer;
- }
- .Alert-box.show::before{
-  content: '';
-  position: absolute;
-  left: 0%;
-  bottom: 0%;
-  height: 4px;
-  background-color: var(--primary-color);
-  width: 100%;
-  box-sizing: border-box;
-  z-index: 11;
-  animation: hideMeter 5s linear;
+}
+
+.Alert-box {
+    position: absolute;
+    right: 2%;
+    top: 0.5%;
+    background: var(--secoundry-color);
+    font-size: 20px;
+    padding: 20px;
+    color: white;
+    min-width: 300px;
+    border-radius: 5px;
+    z-index: 999;
 
 }
 
-@keyframes hideMeter{
-    0%{
-     width: 100%;
-     }
-    100%{
-      width: 0%;
+.hidden {
+    visibility: hidden;
+}
+
+.Alert-box .close-alret {
+    font-size: 20px;
+    position: absolute;
+    right: 5%;
+    top: 10px;
+    cursor: pointer;
+}
+
+.Alert-box.show::before {
+    content: '';
+    position: absolute;
+    left: 0%;
+    bottom: 0%;
+    height: 4px;
+    background-color: var(--primary-color);
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 11;
+    animation: hideMeter 5s linear;
+
+}
+
+@keyframes hideMeter {
+    0% {
+        width: 100%;
+    }
+
+    100% {
+        width: 0%;
     }
 
 }
 
- .Alert-box.show{
-     animation: showAlert 2s ease forwards;
+.Alert-box.show {
+    animation: showAlert 2s ease forwards;
 
- }
- @keyframes showAlert{
-     0%{
-         transform: translateX(100%);
-     }
-     40%{
-         transform: translateX(-15%);
-     }
-     80%{
-         transform: translateX(0%);
-     }
-     100%{
-         transform: translateX(-10%);
-     }
- }
+}
 
- .Alert-box.hide{
+@keyframes showAlert {
+    0% {
+        transform: translateX(100%);
+    }
+
+    40% {
+        transform: translateX(-15%);
+    }
+
+    80% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-10%);
+    }
+}
+
+.Alert-box.hide {
     animation: hideAlert 2s ease forwards;
 
 }
-@keyframes hideAlert{
-    0%{
+
+@keyframes hideAlert {
+    0% {
         transform: translateX(-10%);
     }
-    40%{
+
+    40% {
         transform: translateX(0%);
     }
-    80%{
+
+    80% {
         transform: translateX(-15%);
     }
-    100%{
+
+    100% {
         transform: translateX(106%);
     }
 }
- .home-main h1{
- color: var(--big-color);
+
+.home-main h1 {
+    color: var(--big-color);
 }
+
 .home-main hr {
     border-top: 3px dashed var(--selected-color);
 }
-.box-table{
+
+.box-table {
     position: relative;
     width: 100%;
     padding: 20px;
@@ -104,7 +122,8 @@
     grid-gap: 40px;
 
 }
-.box-table .box-edit{
+
+.box-table .box-edit {
     background: white;
     min-height: 500px;
     position: relative;
@@ -116,7 +135,8 @@
     margin-right: 20%;
     margin-top: 50%;
 }
-.box-table .card-table{
+
+.box-table .card-table {
     position: relative;
     background: white;
     min-height: 500px;
@@ -124,10 +144,11 @@
     box-shadow: 0px 7px 25px var(--icon-color-selector);
     border-radius: 20px;
 }
-.cardHeader{
- display: flex;
- justify-content: space-between;
- align-items: center;
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .cardHeader h2 {
@@ -135,7 +156,7 @@
     font-weight: 800;
 }
 
-.cardHeader a{
+.cardHeader a {
     padding: 5px 10px;
     position: relative;
     text-decoration: none;
@@ -143,188 +164,202 @@
     border-radius: 5px;
     color: white;
 }
-.cardHeader a:hover{
+
+.cardHeader a:hover {
     background: white;
     color: var(--selected-color);
     border: 1px solid var(--selected-color);
 }
-.card-table table{
-width: 100%;
-border-collapse: collapse;
-margin-top: 10px;
+
+.card-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 
 }
+
 .card-table table thead {
     background: var(--icon-color-selector);
+    text-align: center !important;
 
-    }
-
-.card-table table thead tr td{
-font-weight: 600;
-color: var(--big-color);
-padding: 12px;
-text-align: start;
 }
 
-.card-table table tbody tr{
+.card-table table thead tr th {
+    font-weight: 600;
+    color: var(--big-color);
+    padding: 12px;
+    width: 115%;
+}
+
+.card-table table tbody tr {
     border-bottom: 1px solid var(--selected-color);
 
 }
+
 .card-table table tbody {
     border-collapse: separate;
-     border-spacing: 10px;
+    border-spacing: 10px;
 }
 
-.card-table table tbody tr td{
-        padding: 12px;
+.card-table table tbody tr td {
+    padding: 12px;
 
 
-    }
+}
 
 
- .Edit {
+.Edit {
     background-color: green;
     color: white;
     position: relative;
     border-radius: 4em;
-     border: 1em solid transparent;
+    border: 1em solid transparent;
 
- }
- .Edit a{
-     color: white;
-     text-decoration: none;
- }
+}
 
- .Delete {
+.Edit a {
+    color: white;
+    text-decoration: none;
+}
+
+.Delete {
     background-color: var(--primary-color);
     color: white;
     border-radius: 4em;
     position: relative;
     border: 1em solid transparent;
- }
- .Delete a{
-     color: white;
-     text-decoration: none;
-
-
- }
-
-.card-table table tbody tr:hover {
- background-color: var(--selected-color);
-color: white;
 }
 
-.card-table table tbody tr:last-child{
+.Delete a {
+    color: white;
+    text-decoration: none;
+
+
+}
+
+.card-table table tbody tr:hover {
+    background-color: var(--selected-color);
+    color: white;
+}
+
+.card-table table tbody tr:last-child {
     border-bottom: none;
 }
 
-.box-table .card-table table tr td:last-child{
+.box-table .card-table table tr td:last-child {
     text-align: end;
 }
 
-.box-table .card-table table tr td:nth-child(1){
+.box-table .card-table table tr td:nth-child(1) {
     text-align: start;
 }
 
-.box-table .card-table table tr td:nth-child(2){
+.box-table .card-table table tr td:nth-child(2) {
     text-align: center;
 }
 
-.box-table .card-table table tr td:nth-child(3){
+.box-table .card-table table tr td:nth-child(3) {
     text-align: center;
 }
-.box-table .card-table table tr td:nth-child(4){
+
+.box-table .card-table table tr td:nth-child(4) {
     text-align: center;
 }
-.box-table .card-table table tr td:nth-child(5){
+
+.box-table .card-table table tr td:nth-child(5) {
     text-align: center;
 }
-.box-table .card-table table tr td:nth-child(6){
+
+.box-table .card-table table tr td:nth-child(6) {
     text-align: center;
 }
-.box-table .card-table table tr td:nth-child(7){
+
+.box-table .card-table table tr td:nth-child(7) {
     text-align: center;
 }
-.box-table .card-table table tr td:nth-child(8){
+
+.box-table .card-table table tr td:nth-child(8) {
     text-align: center;
 }
-.box-table .card-table table tr td:nth-child(9){
+
+.box-table .card-table table tr td:nth-child(9) {
     text-align: center;
 }
 
 
-.vertical-navigation ul li{
+.vertical-navigation ul li {
     position: relative;
     width: 100%;
     list-style: none;
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
 
-    }
+}
 
 
-    .cardBox{
-        position: relative;
-        width: 100%;
-        padding: 20px;
-        display: grid;
-        grid-template-columns: repeat(4,1fr);
+.cardBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 
-    }
+}
 
-    .card{
-       position: relative;
-       background: white;
-       padding: 30px;
-       margin: 20px;
-       border-radius: 20px;
-       display: flex;
-       cursor: pointer;
-       justify-content: space-between;
-       box-shadow: 0 7px 10px rgba(192, 192, 192, 0.4);
+.card {
+    position: relative;
+    background: white;
+    padding: 30px;
+    margin: 20px;
+    border-radius: 20px;
+    display: flex;
+    cursor: pointer;
+    justify-content: space-between;
+    box-shadow: 0 7px 10px rgba(192, 192, 192, 0.4);
 
-    }
-    .numbers{
-        position: relative;
-        font-weight: 500;
-        font-size: 2.5em;
-        color: var(--primary-color);
-    }
+}
 
-    .cardName{
-        color: var(--big-color);
-        font-size: 1.1em;
-        margin-top: 5px;
-    }
+.numbers {
+    position: relative;
+    font-weight: 500;
+    font-size: 2.5em;
+    color: var(--primary-color);
+}
 
-    .iconCard{
-        color: var(--icon-color);
-        font-size: 2.4em;
-        margin-top: 5px;
+.cardName {
+    color: var(--big-color);
+    font-size: 1.1em;
+    margin-top: 5px;
+}
 
-    }
+.iconCard {
+    color: var(--icon-color);
+    font-size: 2.4em;
+    margin-top: 5px;
 
-    .card:hover{
-        background: var(--selected-color);
-        border-radius: 5px;
-        justify-content: space-between;
-        box-shadow: 0 7px 10px rgba(192, 192, 192, 0.4);
+}
 
-     }
-     .card:hover .numbers{
-         font-weight: 500;
-         font-size: 2em;
-         color: var(--secoundry-color);
-     }
+.card:hover {
+    background: var(--selected-color);
+    border-radius: 5px;
+    justify-content: space-between;
+    box-shadow: 0 7px 10px rgba(192, 192, 192, 0.4);
 
-     .card:hover .cardName{
-         color: white;
-         font-size: 1.6em;
-     }
+}
 
-     .card:hover .iconCard{
-         color: var(--icon-color-selector);
-         font-size: 2em;
+.card:hover .numbers {
+    font-weight: 500;
+    font-size: 2em;
+    color: var(--secoundry-color);
+}
 
-     }
+.card:hover .cardName {
+    color: white;
+    font-size: 1.6em;
+}
 
+.card:hover .iconCard {
+    color: var(--icon-color-selector);
+    font-size: 2em;
+
+}
