@@ -66,6 +66,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         //
+        return view('categories.edit',['category' => $category]);
     }
 
     /**
@@ -78,6 +79,10 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         //
+        $category->update([
+            'title' => $request->title,
+        ]);
+        return redirect()->route('categories.index')->with('success' , 'category was updated');
     }
 
     /**
@@ -89,5 +94,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        $category->delete();
+        return redirect()->route('categories.index', ['category' => $category])->with('success', 'category was deleted');
     }
 }

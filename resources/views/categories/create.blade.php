@@ -15,7 +15,7 @@
                     <h1 class="display-4">Add Category</h1>
                 </div>
             </div>
-            <form class="form" action="{{ route('create-book') }}" method='post'>
+            <form class="form" action="{{ route('categories.store') }}" method='post'>
                 {{-- {{ csrf_field() }} --}}
                 @csrf
                 {{-- title book filed --}}

@@ -64,15 +64,13 @@
         <div class="box-table">
             <div class="card-table">
                 <div class="cardHeader">
-                    <h2>Book Table</h2>
-                    <a href="#" class="btn">View ALL</a>
+                    <h2>Category Table</h2>
+                    <a href="{{route('categories.create')}}" class="btn">Add Category</a>
                 </div>
                 <table>
                     <thead>
                         <tr>
                             <td>Title</td>
-                            <td> </td><br>
-                            <td> </td>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,13 +82,15 @@
                                 <td>{{ $category->created_at}}</td>
 
                                 <td class="Edit">
-                                    <a href="{{ route('categories.update', ['category' => $category]) }}">
+                                    <a href="{{ route('categories.edit', ['category' => $category]) }}">
                                         <span>Edit</span>
                                     </a>
-                                </td>
-                                @method('delete')
-                                <td class="Delete">
-                                    <a href="{{ route('categories.destroy', ['category' => $category]) }}">Delete</a>
+                                    <td class="Delete">
+                                <form method="post" class="delete_form" action="{{ route('categories.destroy', ['category' => $category])}}" >
+                                {{ method_field('DELETE') }}
+                                {{  csrf_field() }}
+                                <button type="submit" class="btn btn-danger">{{ trans('Delete') }}</button>
+                             </form>
                                 </td>
                             </tr>
                         @endforeach
