@@ -7,6 +7,8 @@ use App\Models\Book;
 use App\Http\Requests\BookRequest;
 use App\Models\Category;
 use App\Services\EpubService;
+use Maatwebsite\Excel\Facades\Excel;
+
 class BookController extends Controller
 {
     /**
@@ -16,7 +18,7 @@ class BookController extends Controller
      */
     public function index(Request $value)
     {
-        $books = Book::with('category')->search($value)->orderBy('created_at','desc')->get();
+        $books = Book::with('category')->filterBy(request()->all())->search($value)->latest()->get();
         return view('books.index')->with('books', $books);
     }
 
@@ -143,5 +145,10 @@ class BookController extends Controller
         //
         $updateHtml = $epub->chapterSeparator($request);
         return $updateHtml;   
+    }
+
+    public function importExcel ()
+    {
+
     }
 }
