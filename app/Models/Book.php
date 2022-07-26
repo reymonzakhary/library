@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Searchable;
+use App\Utilities\FilterBuilder;
 
 class Book extends Model
 {
@@ -39,5 +40,12 @@ class Book extends Model
             $q->where($column, 'LIKE', '%'.$value->value.'%');
         });   
         }
+    }
+
+    public function scopeFilterBy($query, $filters)
+    {
+        $namespace = 'App\Utilities\Filters';
+        $filter = new FilterBuilder($query, $filters, $namespace);
+        return $filter->apply();
     }
 }

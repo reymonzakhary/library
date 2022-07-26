@@ -12,6 +12,7 @@
         "laravel/framework": "^9.11",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "maatwebsite/excel": "^3.1",
         "pelago/emogrifier": "^6.0",
         "tonchik-tm/pdf-to-html": "~1"
     },
