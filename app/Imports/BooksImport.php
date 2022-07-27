@@ -6,7 +6,6 @@ use App\Models\Book;
 use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\Category;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-
 class BooksImport implements ToModel, WithHeadingRow
 {
 
@@ -19,9 +18,9 @@ class BooksImport implements ToModel, WithHeadingRow
         }
         return new Book([
             //
-            'title' => isset($row['title']) ? $row['title'] : 'didnt work',
-            'author' => isset($row['author']) ? $row['author'] : 'didnt work',
-            'content' => isset($row['content']) ? $row['content'] : 'didnt work',
+            'title' => isset($row['title']) ? $row['title'] : '',
+            'author' => isset($row['author']) ? $row['author'] : '',
+            'content' => isset($row['content']) ? $row['content'] : '',
             'category_id' => isset($category) ? $category: '1',
         ]);
     }
