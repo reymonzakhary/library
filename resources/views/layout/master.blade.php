@@ -40,9 +40,9 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="{{route('upload.excel.file')}}">
                     <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
-                    <span class="title">Execl</span>
+                    <span class="title">Excel</span>
                     </a>
             </li>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Http\Requests\BookRequest;
+use App\Imports\BooksImport;
 use App\Models\Category;
 use App\Services\EpubService;
 use Maatwebsite\Excel\Facades\Excel;
@@ -147,8 +148,15 @@ class BookController extends Controller
         return $updateHtml;   
     }
 
-    public function importExcel ()
+    public function uploadExcelFile ()
     {
+        return view('books.uploadExcel');
 
+    }
+
+    public function importExcelFile (Request $request)
+    {
+        Excel::import(new BooksImport, $request->file('file'));
+        return redirect()->route('books.index')->with('success', 'Books Imported Successfully');
     }
 }

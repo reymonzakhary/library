@@ -17,6 +17,9 @@ Route::group(['prefix' => '/admin'], function () {
     //books
     Route::resource('/books', BookController::class);
     Route::post('/books/search', [BookController::class, 'index'])->name('search.book');
+    //excel-book-importing
+    Route::get('import/file', [BookController::class, 'uploadExcelFile'])->name('upload.excel.file');
+    Route::post('import/file', [BookController::class, 'importExcelFile'])->name('import.excel');
     //categories
     Route::resource('/categories', CategoryController::class);
 });
