@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Book;
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PHPePub\Core\EPub;
@@ -12,13 +10,42 @@ use PHPePub\Helpers\CalibreHelper;
 
 class EpubService
 {
+    function getElementsByClassName($dom, $ClassName, $tagName = null)
+    {
+        if ($tagName) {
+            $Elements = $dom->getElementsByTagName($tagName);
+        } else {
+            $Elements = $dom->getElementsByTagName("*");
+        }
+        $Matched = array();
+        for ($i = 0; $i < $Elements->length; $i++) {
+            if ($Elements->item($i)->attributes->getNamedItem('class')) {
+                if ($Elements->item($i)->attributes->getNamedItem('class')->nodeValue == $ClassName) {
+                    $Matched[] = $Elements->item($i);
+                }
+            }
+        }
+        return $Matched;
+    }
+
     public function htmlConverter()
     {
-        $pdf = new Pdf('/var/www/html/public/files/1657721951_c4611_sample_explain.pdf', [
+        $pdf = new Pdf('/var/www/html/public/files/Anne-of-Green-Gables-By-Lucy-Maud-Montgomery-Retold-by-Anne-Collins-book-PDF.pdf', [
             'pdftohtml_path' => '/usr/bin/pdftohtml',
             'pdfinfo_path' => '/usr/bin/pdfinfo'
         ]);
-        $allPages = $pdf->getHtml()->getAllPages();
+        // $allPages = $pdf->getHtml()->getAllPages();
+        // dd($allPages);
+        $html = Storage::disk('public')->get('Anne-of-Green-Gables.html');
+        // dd($html);
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $internalErrors = libxml_use_internal_errors(true);
+        $dom->loadHTML($html);
+        libxml_use_internal_errors($internalErrors);
+        foreach ($this->getElementsByClassName($dom, 'page', 'div') as $node) {
+            $allPages[] = $dom->saveHTML($node);
+        }
+
         return view('viewer')->with('allPages', $allPages);
     }
 
@@ -36,6 +63,7 @@ class EpubService
         foreach ($values as $chapter) {
             $chapterCollection[] = collect($htmlPages)->filter(fn ($i, $index) => in_array($index, $chapter))->toArray();
         }
+
 
         $this->convert($chapterCollection);
     }
@@ -69,12 +97,24 @@ class EpubService
         $book->setRights("Copyright and licence information specific for the book."); // As this is generated, this _could_ contain the name or licence information of the user who purchased the book, if needed. If this is used that way, the identifier must also be made unique for the book.
         $book->setSourceURL("http://JohnJaneDoePublications.com/books/TestBookSimple.html");
         CalibreHelper::setCalibreMetadata($book, "PHPePub Test books", "5");
-        // $cssData = "body {\n  margin-left: .5em;\n  margin-right: .5em;\n  text-align: justify;\n}\n\np {\n  font-family: serif;\n  font-size: 10pt;\n  text-align: justify;\n  text-indent: 1em;\n  margin-top: 0px;\n  margin-bottom: 1ex;\n}\n\nh1, h2 {\n  font-family: sans-serif;\n  font-style: italic;\n  text-align: center;\n  background-color: #6b879c;\n  color: white;\n  width: 100%;\n}\n\nh1 {\n    margin-bottom: 2px;\n}\n\nh2 {\n    margin-top: -2px;\n    margin-bottom: 2px;\n}\n";
-        // $book->addCSSFile("styles.css", "css1", $cssData);
+        $cssData = "body .page { background-color:white; position:relative; z-index:0; }
+        .vector { position:absolute; z-index:1; }
+        .image { position:absolute; z-index:2; }
+        .text { position:absolute; z-index:3; opacity:inherit; white-space:nowrap; }
+        .annotation { position:absolute; z-index:5; }
+        .control { position:absolute; z-index:10; }
+        .annotation2 { position:absolute; z-index:7; }
+        .dummyimg { vertical-align: top; border: none; }
+        }\n";
+        $book->addCSSFile("styles.css", "css1", $cssData);
         foreach ($chapters as $num => $chapter) {
-            $patterns = array('/style=[^>]*/', '/<img[^>]+\>/i', '/<p[^>]*>(?:\s|&nbsp;)*<\/p>/');
+            $patterns = array('/style=[^>]*/', '/<p[^>]*>(?:\s|&nbsp;)*<\/p>/');
             $content =  preg_replace($patterns, '', $chapter);
-            $book->addChapter("Chapter " . $num, "chapter" . $num . ".html", $content_start . implode($content) . $bookEnd);
+            // dd(implode($chapter));
+            // $modify =preg_replace('/<span class="text">(.*?)<\/span>/', '<p class="calibre1">', $content);
+
+            // dd($modify);
+            $book->addChapter("Chapter " . $num, "chapter" . $num . ".html", $content_start . implode($chapter) . $bookEnd);
         }
         $book->buildTOC();
         $book->finalize();
@@ -123,5 +163,182 @@ class EpubService
         // preg_match_all("/[\s]+name=\d+></a>\+((.+?)<hr />)?/is",  html_entity_decode($file), $matches);
         // dd($matches[2]);
         // }
+    }
+
+    public function convertByApi()
+    {
+        $apiKey = $_POST["apiKey"]; // The authentication key (API Key). Get your own by registering at https://app.pdf.co
+        $pages = "";
+        if (isset($_POST["pages"])) {
+            $pages = $_POST["pages"];
+        }
+
+        $plainHtml = false;
+        if (isset($_POST["plainHtml"])) {
+            $plainHtml = $_POST["plainHtml"];
+        }
+
+        $columnLayout = false;
+        if (isset($_POST["columnLayout"])) {
+            $columnLayout = $_POST["columnLayout"];
+        }
+
+        // 1. RETRIEVE THE PRESIGNED URL TO UPLOAD THE FILE.
+        // * If you already have the direct PDF file link, go to the step 3.
+
+        // Create URL
+        $url = "https://api.pdf.co/v1/file/upload/get-presigned-url" .
+            "?name=" . urlencode($_FILES["file"]["name"]) .
+            "&contenttype=application/octet-stream";
+        // Create request
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("x-api-key: " . $apiKey));
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        // Execute request
+        $result = curl_exec($curl);
+        if (curl_errno($curl) == 0) {
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            if ($status_code == 200) {
+                $json = json_decode($result, true);
+
+                // Get URL to use for the file upload
+                $uploadFileUrl = $json["presignedUrl"];
+                // Get URL of uploaded file to use with later API calls
+                $uploadedFileUrl = $json["url"];
+
+                // 2. UPLOAD THE FILE TO CLOUD.
+
+                $localFile = $_FILES["file"]["tmp_name"];
+                $fileHandle = fopen($localFile, "r");
+
+                curl_setopt($curl, CURLOPT_URL, $uploadFileUrl);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, array("content-type: application/octet-stream"));
+                curl_setopt($curl, CURLOPT_PUT, true);
+                curl_setopt($curl, CURLOPT_INFILE, $fileHandle);
+                curl_setopt($curl, CURLOPT_INFILESIZE, filesize($localFile));
+
+                // Execute request
+                curl_exec($curl);
+
+                fclose($fileHandle);
+
+                if (curl_errno($curl) == 0) {
+                    $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    if ($status_code == 200) {
+                        // 3. CONVERT UPLOADED PDF FILE TO HTML
+
+                        $this->PdfToHtml($apiKey, $uploadedFileUrl, $pages, $plainHtml, $columnLayout);
+                    } else {
+                        // Display request error
+                        echo "<p>Status code: " . $status_code . "</p>";
+                        echo "<p>" . $result . "</p>";
+                    }
+                } else {
+                    // Display CURL error
+                    echo "Error: " . curl_error($curl);
+                }
+            } else {
+                // Display service reported error
+                echo "<p>Status code: " . $status_code . "</p>";
+                echo "<p>" . $result . "</p>";
+            }
+
+            curl_close($curl);
+        } else {
+            // Display CURL error
+            echo "Error: " . curl_error($curl);
+        }
+    }
+
+    function PdfToHtml($apiKey, $uploadedFileUrl, $pages, $plainHtml, $columnLayout)
+    {
+        // Create URL
+        $url = "https://api.pdf.co/v1/pdf/convert/to/html";
+
+        // Prepare requests params
+        $parameters = array();
+        $parameters["url"] = $uploadedFileUrl;
+        $parameters["pages"] = $pages;
+
+        if ($plainHtml) {
+            $parameters["simple"] = $plainHtml;
+        }
+
+        if ($columnLayout) {
+            $parameters["columns"] = $columnLayout;
+        }
+
+        // Create Json payload
+        $data = json_encode($parameters);
+
+        // Create request
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("x-api-key: " . $apiKey, "Content-type: application/json"));
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+        // Execute request
+        $result = curl_exec($curl);
+        if (curl_errno($curl) == 0) {
+            $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            if ($status_code == 200) {
+                $json = json_decode($result, true);
+
+                if (!isset($json["error"]) || $json["error"] == false) {
+                    $resultFileUrl = $json["url"];
+                    // Display link to the file with conversion results
+                    $html = file_get_contents($resultFileUrl);
+                    Storage::disk('local')->put('convertedpdf.html', $html);
+                    return response()->download(storage_path() . '/app/convertedpdf.html')->deleteFileAfterSend(true);
+                    echo "<div><h2>Conversion Result:</h2><a href='" . $resultFileUrl . "' target='_blank'>" . $resultFileUrl . "</a></div>";
+                } else {
+                    // Display service reported error
+                    echo "<p>Error: " . $json["message"] . "</p>";
+                }
+            } else {
+                // Display request error
+                echo "<p>Status code: " . $status_code . "</p>";
+                echo "<p>" . $result . "</p>";
+            }
+        } else {
+            // Display CURL error
+            echo "Error: " . curl_error($curl);
+        }
+
+        // Cleanup
+        curl_close($curl);
+    }
+
+    public function api()
+    {
+
+        //gives timeout for many requests  
+
+        // Connect to the Production API using an API Key
+        $zamzar = new \Zamzar\ZamzarClient("e43d419266bf9c337a13a440e2703dfd7427db26");
+
+        // Submit a conversion job
+        $job = $zamzar->jobs->submit([
+            'source_file' => '/var/www/html/public/files/1657203562_Get_Started_With_Smallpdf.pdf',
+            'target_format' => '.epub'
+        ]);
+
+        // Wait for the job to complete (the default timeout is 60 seconds)
+        $job->waitForCompletion([
+            'timeout' => 60
+        ]);
+
+        // Download the converted files 
+        $job->downloadTargetFiles([
+            'download_path' => '/var/www/html/public/files'
+        ]);
+
+        // Delete the source and target files on Zamzar's servers
+        $job->deleteAllFiles();
     }
 }

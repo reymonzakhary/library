@@ -13,13 +13,18 @@ Route::get('/', function () {
 Auth::routes();
 Route::view('/login', 'layout/login');
 
+// Route::post('/test', function () {
+//     return view('test');
+// });
 Route::group(['prefix' => '/admin'], function () {
     //books
     Route::resource('/books', BookController::class);
     Route::post('/books/search', [BookController::class, 'index'])->name('search.book');
     //excel-book-importing
-    Route::get('import/file', [BookController::class, 'uploadExcelFile'])->name('upload.excel.file');
-    Route::post('import/file', [BookController::class, 'importExcelFile'])->name('import.excel');
+    Route::get('import/file', [BookController::class,'uploadExcelFile'])->name('upload.excel.file');
+    Route::post('import/file', [BookController::class,'importExcelFile'])->name('import.excel');
+    Route::get('/download/{file}', [BookController::class,'downloadTemplate'])->name('download.template');
+    Route::get('/export/file', [BookController::class,'exportExcelFile'])->name('export.excel');
     //categories
     Route::resource('/categories', CategoryController::class);
 });
@@ -28,9 +33,10 @@ Route::group(['prefix' => '/api'], function () {
     Route::get('books', [BookControllers::class, 'index']);
     Route::get('book/{id}', [BookControllers::class, 'show']);
 });
-// Route::get('/epubw', [BookController::class, 'convertEpub']);
-Route::get('/html', [BookController::class, 'convertHtml']);
-Route::post('/html', [BookController::class, 'updateHtml'])->name('update.html');
+Route::post('/pdf', [BookController::class, 'convertPdf']);
+Route::get('/htmls  ', [BookController::class, 'convertHtml']);
+Route::post('/htmls', [BookController::class, 'updateHtml'])->name('update.html');
+// Route::get('/apitest', [BookController::class, 'testApi']);
 
 // route to generate epub file
 Route::get('/epub', function () {
