@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BooksExport;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Http\Requests\BookRequest;
 use App\Imports\BooksImport;
 use App\Models\Category;
 use App\Services\EpubService;
+use Illuminate\Http\Response;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BookController extends Controller
@@ -45,22 +47,22 @@ class BookController extends Controller
     {
         //
         $book = Book::create($request->validated());
-        if($request->file('file')) {
-            $fileName = time().'_'.$request->file->getClientOriginalName();
+        if ($request->file('file')) {
+            $fileName = time() . '_' . $request->file->getClientOriginalName();
             $filePath = $request->file('file')->storeAs('uploads/files', $fileName, 'public');
-            $request->file = time().'_'.$request->file->getClientOriginalName();
+            $request->file = time() . '_' . $request->file->getClientOriginalName();
             $request->file_path = '/storage/' . $filePath;
         }
-        if($request->file('audio')) {
-            $fileName = time().'_'.$request->audio->getClientOriginalName();
+        if ($request->file('audio')) {
+            $fileName = time() . '_' . $request->audio->getClientOriginalName();
             $filePath = $request->file('audio')->storeAs('uploads/audio', $fileName, 'public');
-            $request->file = time().'_'.$request->audio->getClientOriginalName();
+            $request->file = time() . '_' . $request->audio->getClientOriginalName();
             $request->file_path = '/storage/' . $filePath;
         }
-        if($request->file('img')) {
-            $fileName = time().'_'.$request->img->getClientOriginalName();
+        if ($request->file('img')) {
+            $fileName = time() . '_' . $request->img->getClientOriginalName();
             $filePath = $request->file('img')->storeAs('uploads/imgs', $fileName, 'public');
-            $request->file = time().'_'.$request->img->getClientOriginalName();
+            $request->file = time() . '_' . $request->img->getClientOriginalName();
             $request->file_path = '/storage/' . $filePath;
         }
         return redirect()->route('books.index')->with('success', 'book was added');
@@ -86,7 +88,7 @@ class BookController extends Controller
     public function edit(Book $book)
     {
         //
-        return view('books.edit',['book' => $book]);
+        return view('books.edit', ['book' => $book]);
     }
 
     /**
@@ -111,7 +113,7 @@ class BookController extends Controller
             'tags' => $request->tags,
             'file' => $request->file,
         ]);
-        return redirect()->route('books.index')->with('success' , 'book was updated');
+        return redirect()->route('books.index')->with('success', 'book was updated');
     }
 
     /**
@@ -127,36 +129,50 @@ class BookController extends Controller
         return redirect()->route('books.index', ['book' => $book])->with('success', 'book was deleted');
     }
 
-    public function convertEpub(EpubService $epub)
+    public function convertPdf(EpubService $epub)
     {
         //
-        $epubTest = $epub->convert();
-        return $epubTest;   
+        $htmlTest = $epub->convertByApi();
+        return $htmlTest;
     }
 
     public function convertHtml(EpubService $epub)
     {
         //
         $htmlTest = $epub->htmlConverter();
-        return $htmlTest;   
+        return $htmlTest;
     }
 
     public function updateHtml(EpubService $epub, Request $request)
     {
         //
         $updateHtml = $epub->chapterSeparator($request);
-        return $updateHtml;   
+        return $updateHtml;
     }
 
-    public function uploadExcelFile ()
+    public function uploadExcelFile()
     {
         return view('books.uploadExcel');
-
     }
 
-    public function importExcelFile (Request $request)
+    public function importExcelFile(Request $request)
     {
         Excel::import(new BooksImport, $request->file('file'));
         return redirect()->route('books.index')->with('success', 'Books Imported Successfully');
     }
+
+    public function exportExcelFile()
+    {
+        return Excel::download(new BooksExport, 'books-collection.xlsx');
+    }
+
+    public function downloadTemplate($file)
+    {
+        $file_path = public_path('public/download/' . $file);
+        $headers = array(
+            'Content-Type: application/pdf',
+        );
+        return Response::download($file, $headers);
+    }
+
 }

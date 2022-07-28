@@ -14,7 +14,8 @@
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "pelago/emogrifier": "^6.0",
-        "tonchik-tm/pdf-to-html": "~1"
+        "tonchik-tm/pdf-to-html": "~1",
+        "zamzar/zamzar-php": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

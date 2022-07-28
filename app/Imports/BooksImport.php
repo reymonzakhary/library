@@ -12,9 +12,9 @@ class BooksImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        if($row['category_id'] != Null)
+        if($row['category'] != Null)
         {
-            $category = Category::where('title', $row['category_id'])->first()->id;
+            $category = Category::where('title','LIKE' ,$row['category'])->first()->id;
         }
         return new Book([
             //

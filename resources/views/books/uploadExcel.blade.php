@@ -26,11 +26,15 @@
                             <span class="tooltiptext">Supported Format (xlsx, csv)</span>
                         </div>
                     </div>
+                    <a href="/download/templateExample.xlsx" download="templateExample.xlsx">Download Template</a>
+
                     <ion-icon name="checkmark-done-circle-outline"></ion-icon>
                 </div>
                 </label>
                 <input type="file" id="file" name="file" placeholder="upload file">
                 <input type="submit" value="Save and Containue" class="submit-form" />
+                
+            <a class="btn btn-success" href="{{ route('export.excel') }}">Export data</a>
             </form>
             <div class="container">
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "386ff55630fce92ada31ee5116c81145",
+    "content-hash": "924e5fb4494e262b55876fa6b9356feb",
     "packages": [
         {
             "name": "brick/math",
@@ -6305,6 +6305,57 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "zamzar/zamzar-php",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zamzar/zamzar-php.git",
+                "reference": "2e5bee55016c5e707869269360ad31f93431a4d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zamzar/zamzar-php/zipball/2e5bee55016c5e707869269360ad31f93431a4d4",
+                "reference": "2e5bee55016c5e707869269360ad31f93431a4d4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^7.3",
+                "php": ">=7.2.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zamzar\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Zamzar",
+                    "homepage": "https://github.com/zamzar/zamzar-php"
+                }
+            ],
+            "description": "Zamzar PHP Library",
+            "homepage": "https://www.zamzar.com/",
+            "keywords": [
+                "api",
+                "file conversion",
+                "zamzar"
+            ],
+            "support": {
+                "issues": "https://github.com/zamzar/zamzar-php/issues",
+                "source": "https://github.com/zamzar/zamzar-php/tree/v1.0.1"
+            },
+            "time": "2021-05-07T13:55:12+00:00"
         }
     ],
     "packages-dev": [
