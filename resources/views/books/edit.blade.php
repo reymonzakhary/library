@@ -1,165 +1,253 @@
 @extends('layout.master')
-@section('title' , 'Edit')
+@section('title', 'home')
 @section('static_body')
-@parent
-<div class="main-blank">
-    <div class=form-blank>
-        <div class="form-infromation">
-            {{-- list of fileds information  --}}
-            <form action="{{route('books.update', ['book' => $book])}}" method="POST" enctype="multipart/form-data" class="form">
-                @method('PATCH')
-                @csrf
-                <div class="header-input">
+    @parent()
 
-                    <div class="title-label">
-                        <i>
-                            <ion-icon name="search-circle-outline"></ion-icon>
-                        </i>
-                        <label>Title Book</label>
-                    </div>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" href="{{ route('books.index') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Interface</div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Layouts
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
 
-                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-                </div>
-                <p>*requied</p>
-                @if ( $book != null)
-                <input type="text" id="b-title" name="title" value="{{$book->title}}"><br>
-                <br>
-                @else
-                <input type="text" id="b-title" name="title" placeholder="Enter your book title" required><br>
-                <br>
-                @endif
+                                <a href="{{ route('books.create') }}" class="nav-link"
+                                    href="layout-sidenav-light.html">Create</a>
+                                <a href="{{ route('upload.excel.file') }}" class="nav-link"
+                                    href="layout-sidenav-light.html">Excel</a>
 
-                @if($errors->has('title'))
-                <div class="error">{{ $errors->first('title') }}</div>
-                @endif
-                {{-- book author filed --}}
-                <div class="header-input">
-
-                    <div class="title-label">
-                        <i>
-                            <ion-icon name="person-circle-outline"></ion-icon>
-                        </i>
-                        <label>Author Book</label>
-                    </div>
-                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-                </div>
-                <p>*requied</p>
-                <input type="text" id="b-author" name="author" value="{{ $book->author }}" required><br>
-                <br>
-                @if($errors->has('author'))
-                <div class="error">{{ $errors->first('author') }}</div>
-                @endif
-                <div class="header-input">
-
-                    <div class="title-label">
-                        <i>
-                            <ion-icon name="create-outline"></ion-icon>
-                        </i>
-                        <label>Description</label>
-                    </div>
-                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-                </div>
-                <p>*requied</p>
-                <textarea class="desc" type="text" id="b-content" name="content" placeholder="Enter your descpription book example (my book ..)" cols="40" rows="6" required>{{ $book->content }}</textarea><br>
-                <br>
-                @if($errors->has('content'))
-                <div class="error">{{ $errors->first('content') }}</div>
-                @endif
-                <div class="header-input">
-                    <div class="title-label">
-                        <i>
-                            <ion-icon name="copy-outline"></ion-icon>
-                        </i>
-                        <label>Categories</label>
-                    </div>
-                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-                </div>
-                <p>*requied</p>
-                <select id="books" name="category_id" size="1" class="categories-dropdown">
-                    <option value="1">Drama</option>
-                    <option value="2">Science Fiction</option>
-                </select><br><br>
-                <div class="header-input">
-                    <div class="title-label">
-                        <i>
-                            <ion-icon name="copy-outline"></ion-icon>
-                        </i>
-                        <label>File</label>
-                    </div>
-                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-                </div>
-                </label>
-                @if ($book->file == null)
-                <input type="file" id="b-file" name="file" placeholder="upload file">
-                @else
-                <label>{{ $book->file }}</label>
-                <input type="file" id="b-file" name="file">
-                @endif
-                <div class="header-input">
-                    <div class="title-label">
-                        <i>
-                            <ion-icon name="copy-outline"></ion-icon>
-                        </i>
-                        <label>audio</label>
-                    </div>
-                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-                </div>
-                </label>
-                @if ($book->audio == null)
-                <input type="file" id="b-audio" name="audio" placeholder="upload audio">
-                @else
-                <label>{{ $book->audio }}</label>
-                <input type="file" id="b-audio" name="audio">
-                @endif
-                <div class="header-input">
-                    <div class="title-label">
-                        <i>
-                            <ion-icon name="copy-outline"></ion-icon>
-                        </i>
-                        <label>Image</label>
-                    </div>
-                    <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-                </div>
-                </label>
-                @if ($book->img == null)
-                <input type="file" id="b-img" name="img" placeholder="upload image">
-                <img src="{{ storage_path().'/images/'.$book->img }}" alt="" title=""></a>
-                @else
-                <label>{{ $book->img }}</label>
-                <input type="file" id="b-img" name="img">
-                @endif
-                <input type="submit" value="Save and Containue" class="submit-form" />
-
-            </form>
-            <div class="container">
-
-                <div class="panel panel-primary">
-                    <div class="panel-body">
-                        @if ($message = Session::get('success'))
-                        <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
+                            </nav>
                         </div>
-                        <img src="images/{{ Session::get('image') }}">
-                        @endif
-
-                        @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were some problems with your input.
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            Pages
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a href="{{ route('books.index') }}" class="nav-link" href="layout-static.html">Home</a>
+                                <a href="{{ route('categories.index') }}" class="nav-link"
+                                    href="layout-sidenav-light.html">Categories</a>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                                    aria-controls="pagesCollapseAuth">
+                                    Authentication
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="login.html">Login</a>
+                                        <a class="nav-link" href="register.html">Register</a>
+                                        <a class="nav-link" href="password.html">Forgot Password</a>
+                                    </nav>
+                                </div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                    aria-controls="pagesCollapseError">
+                                    Error
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="401.html">401 Page</a>
+                                        <a class="nav-link" href="404.html">404 Page</a>
+                                        <a class="nav-link" href="500.html">500 Page</a>
+                                    </nav>
+                                </div>
+                            </nav>
                         </div>
-                        @endif
-
+                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        <a class="nav-link" href="charts.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Charts
+                        </a>
+                        <a class="nav-link" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Tables
+                        </a>
                     </div>
                 </div>
-            </div>
-
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    Start Bootstrap
+                </div>
+            </nav>
         </div>
+        <div id="layoutSidenav_content">
 
+            <div class="container my-5 py-5">
+
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success alert-dismissible">
+                        <a style="float: right; font-size: 25px; margin-top: -8px" href="#" class="close"
+                            data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> &nbsp; {{ $message }}
+                        {{-- <img src="images/{{ Session::get('image') }}"> --}}
+                    </div>
+                @endif
+
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger alert-dismissible">
+                        <a style="float: right; font-size: 30px; margin-top: 20px; text-decoration: none; font-weight: bold"
+                            href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Whoops!</strong> &nbsp; There were some problems with your input.
+                        {{-- <img src="images/{{ Session::get('image') }}"> --}}
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <!--Section: Design Block-->
+                <section>
+
+                    <div class="row">
+
+                        <div class="col-md-12 mb-4">
+                            <div class="card mb-4">
+                                <div class="card-header py-3">
+                                    <h5 class="mb-0 text-font text-uppercase">Edit Book</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form action="{{ route('books.update', ['book' => $book]) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @method('PATCH')
+
+                                        @csrf
+                                        <div class="row mb-4">
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    <label class="form-label" for="form11Example1">Title Book</label>
+                                                    <strong style="color: red; float:right">* Requied</strong>
+
+                                                    <input type="text" id="b-title" name="title"
+                                                        class="form-control" value="{{ $book->title }}" />
+                                                </div>
+                                                @if ($errors->has('title'))
+                                                    <small style="color: red;">
+                                                        {{ $errors->first('title') }}</small>
+                                                @endif
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    <label class="form-label" for="form11Example2">Author</label>
+                                                    <strong style="color: red; float:right">* Requied</strong>
+                                                    <input type="text" id="b-author" name="author"
+                                                        class="form-control" value="{{ $book->author }}" />
+                                                </div>
+                                                @if ($errors->has('author'))
+                                                    <small style="color: red;">
+                                                        {{ $errors->first('author') }}</small>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-4">
+                                            <div class="col">
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Example select</label>
+                                                    <select class="form-control custom-select"
+                                                        id="exampleFormControlSelect1" id="books" name="category_id">
+                                                        <option value="1">Drama</option>
+                                                        <option value="2">Science Fiction</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    <label class="form-label" for="b-file">Files</label>
+                                                    {{-- <strong style="color: red; float:right">* Requied</strong> --}}
+                                                    <div class="form-group">
+                                                        <input type="file" id="b-file" name="file">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row mb-4">
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    <label class="form-label" for="b-audio">Audio</label>
+                                                    {{-- <strong style="color: red; float:right">* Requied</strong> --}}
+                                                    <div class="form-group">
+                                                        <input type="file" id="b-audio" name="audio">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="form-outline">
+                                                    <label class="form-label" for="b-img">Image</label>
+                                                    {{-- <strong style="color: red; float:right">* Requied</strong> --}}
+                                                    <div class="form-group">
+                                                        <input type="file" id="b-img" name="img">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Message input -->
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="b-content">Book Description</label>
+                                            <strong style="color: red; float:right">* Requied</strong>
+
+                                            <textarea class="form-control"id="b-content" name="content" rows="4">{{ $book->content }}</textarea>
+
+                                            @if ($errors->has('content'))
+                                                <div class="alert alert-danger" role="alert">
+                                                    {{ $errors->first('content') }}</div>
+                                            @endif
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn btn-primary col-md-12">Create</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+                <!--Section: Design Block-->
+
+            </div>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Charisma Design</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
-</div>
+
+    <script>
+        $(".alert").alert('close')
+    </script>
+
 @stop
