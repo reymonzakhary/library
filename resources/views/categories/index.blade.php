@@ -120,15 +120,13 @@
                                     </strong>
 
                                     <span style="float: right">
-                                        <img width="60" height="60"
-                                            src="{{ URL::asset('assets/images/books.svg') }}" style="color: #fff"
-                                            alt="">
+                                        <i class="fa fa-list-alt fa-4x" aria-hidden="true"></i>
                                     </span>
                                 </div>
 
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                     <a class="small text-white stretched-link" href="#">View Books</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    <div class="small text-white"><i class="fa fa-angle-right"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -143,9 +141,7 @@
                                     </strong>
 
                                     <span style="float: right">
-                                        <img width="60" height="60"
-                                            src="{{ URL::asset('assets/images/books.svg') }}" style="color: #fff"
-                                            alt="">
+                                        <i class="fa fa-book fa-4x" aria-hidden="true"></i>
                                     </span>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -165,9 +161,7 @@
                                     </strong>
 
                                     <span style="float: right">
-                                        <img width="60" height="60"
-                                            src="{{ URL::asset('assets/images/books.svg') }}" style="color: #fff"
-                                            alt="">
+                                        <i class="fa fa-users fa-4x" aria-hidden="true"></i>
                                     </span>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -187,9 +181,7 @@
                                     </strong>
 
                                     <span style="float: right">
-                                        <img width="60" height="60"
-                                            src="{{ URL::asset('assets/images/books.svg') }}" style="color: #fff"
-                                            alt="">
+                                        <i class="fa fa-book fa-4x" aria-hidden="true"></i>
                                     </span>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -253,17 +245,25 @@
                                             <td>{{ $category->created_at }}</td>
 
                                             <td style="text-align: center">
-                                                <a class="btn btn-warning" style="color: #fff"
+                                                <a style="color: #FFC107"
                                                     href="{{ route('categories.edit', ['category' => $category]) }}">
-                                                    <span>Edit</span>
+                                                    <span>
+                                                        <i class="fa fa-edit fa-2x" aria-hidden="true"></i>
+
+                                                    </span>
                                                 </a>
+                                            </td>
+
                                             <td style="text-align: center">
                                                 <form method="post" class="delete_form"
                                                     action="{{ route('categories.destroy', ['category' => $category]) }}">
                                                     {{ method_field('DELETE') }}
                                                     {{ csrf_field() }}
                                                     <button type="submit"
-                                                        class="btn btn-danger">{{ trans('Delete') }}</button>
+                                                        style="background: none; border: none; color: #DC3545">
+                                                        <i class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
+
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
