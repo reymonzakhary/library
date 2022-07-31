@@ -134,7 +134,8 @@
                                         <div class="row mb-4">
                                             <div class="col">
                                                 <div class="form-outline">
-                                                    <label class="form-label" for="form11Example1">Title Book</label>
+                                                    <label class="form-label" for="form11Example1">Book Title </label>
+
                                                     <strong style="color: red; float:right">* Requied</strong>
 
                                                     <input type="text" id="b-title" name="title"
@@ -174,7 +175,9 @@
                                             </div>
                                             <div class="col">
                                                 <div class="form-outline">
-                                                    <label class="form-label" for="b-file">Files</label>
+                                                    <label class="form-label" data-toggle="tooltip" data-placement="top"
+                                                        title="Supported Format (pdf,ms-word)"
+                                                        for="b-file">Files</label>
                                                     {{-- <strong style="color: red; float:right">* Requied</strong> --}}
                                                     <div class="form-group">
                                                         <input type="file" id="b-file" name="file">
@@ -187,7 +190,8 @@
                                         <div class="row mb-4">
                                             <div class="col">
                                                 <div class="form-outline">
-                                                    <label class="form-label" for="b-audio">Audio</label>
+                                                    <label class="form-label" data-toggle="tooltip" data-placement="top"
+                                                        title="Supported Format (mp3)" for="b-audio">Audio</label>
                                                     {{-- <strong style="color: red; float:right">* Requied</strong> --}}
                                                     <div class="form-group">
                                                         <input type="file" id="b-audio" name="audio">
@@ -196,7 +200,9 @@
                                             </div>
                                             <div class="col">
                                                 <div class="form-outline">
-                                                    <label class="form-label" for="b-img">Image</label>
+                                                    <label class="form-label" data-toggle="tooltip" data-placement="top"
+                                                        title="Supported Format (jpeg,png,jpg)"
+                                                        for="b-img">Image</label>
                                                     {{-- <strong style="color: red; float:right">* Requied</strong> --}}
                                                     <div class="form-group">
                                                         <input type="file" id="b-img" name="img">
@@ -245,9 +251,5 @@
             </footer>
         </div>
     </div>
-
-    <script>
-        $(".alert").alert('close')
-    </script>
 
 @stop
