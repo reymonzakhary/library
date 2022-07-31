@@ -120,9 +120,7 @@
                                     </strong>
 
                                     <span style="float: right">
-                                        <img width="60" height="60"
-                                            src="{{ URL::asset('assets/images/books.svg') }}" style="color: #fff"
-                                            alt="">
+                                        <i class="fa fa-book fa-4x" aria-hidden="true"></i>
                                     </span>
                                 </div>
 
@@ -147,9 +145,7 @@
                                     </strong>
 
                                     <span style="float: right">
-                                        <img width="60" height="60"
-                                            src="{{ URL::asset('assets/images/books.svg') }}" style="color: #fff"
-                                            alt="">
+                                        <i class="fa fa-list-alt fa-4x" aria-hidden="true"></i>
                                     </span>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -173,9 +169,7 @@
                                     </strong>
 
                                     <span style="float: right">
-                                        <img width="60" height="60"
-                                            src="{{ URL::asset('assets/images/books.svg') }}" style="color: #fff"
-                                            alt="">
+                                        <i class="fa fa-users fa-4x" aria-hidden="true"></i>
                                     </span>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -199,9 +193,7 @@
                                     </strong>
 
                                     <span style="float: right">
-                                        <img width="60" height="60"
-                                            src="{{ URL::asset('assets/images/books.svg') }}" style="color: #fff"
-                                            alt="">
+                                        <i class="fa fa-book fa-4x" aria-hidden="true"></i>
                                     </span>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -282,11 +274,11 @@
 
                                     @foreach ($books as $book)
                                         <tr>
-                                            <td><span class="title-book">{{ $book->title }}</span></td>
+                                            <td>{{ Str::substr($book->title, 0, 10) }}...</td>
 
-                                            <td>{{ $book->author }}</td>
+                                            <td>{{ Str::substr($book->author, 0, 10) }}...</td>
 
-                                            <td>{{ Str::substr($book->content, 0, 20) }}...</td>
+                                            <td>{{ Str::substr($book->content, 0, 10) }}...</td>
 
                                             @if ($book->rate == null)
                                                 <td>0</td>
@@ -296,24 +288,23 @@
 
 
                                             @if ($book->img == null)
-                                                <td width="5%">
-                                                    https://via.placeholder.com/50x80.png/0000cc?text=animals+est</td>
+                                                <td>{{ Str::substr($book->img, 0, 10) }}...</td>
                                             @else
-                                                <td width="5%">{{ $book->img }}</td>
+                                                <td>{{ Str::substr($book->img, 0, 10) }}...</td>
                                             @endif
 
 
                                             @if ($book->audio == null)
-                                                <td>audio</td>
+                                                <td>{{ Str::substr($book->audio, 0, 10) }}...</td>
                                             @else
-                                                <td>{{ $book->audio }}</td>
+                                                <td>{{ Str::substr($book->audio, 0, 10) }}...</td>
                                             @endif
 
 
                                             @if ($book->file == null)
-                                                <td>file</td>
+                                                <td>{{ Str::substr($book->file, 0, 10) }}...</td>
                                             @else
-                                                <td>{{ $book->file }}</td>
+                                                <td>{{ Str::substr($book->file, 0, 10) }}...</td>
                                             @endif
 
 
@@ -326,21 +317,29 @@
                                             @if ($book->totalpages == null)
                                                 <td>0</td>
                                             @else
-                                                <td width="14%">{{ $book->totalpages }}</td>
+                                                <td>{{ $book->totalpages }}</td>
                                             @endif
-                                            <td width="14%">{{ $book->created_at }}</td>
+                                            <td>{{ $book->created_at }}</td>
 
-                                            <td>
-                                                <a class="btn btn-warning" style="color: #fff"
-                                                    href="{{ route('books.edit', ['book' => $book]) }}">Edit</a>
+                                            <td style="text-align: center">
+                                                <a style="color: #FFC107"
+                                                    href="{{ route('books.edit', ['book' => $book]) }}">
+                                                    <span>
+                                                        <i class="fa fa-edit fa-2x" aria-hidden="true"></i>
+
+                                                    </span>
+                                                </a>
                                             </td>
-                                            <td>
+                                            <td style="text-align: center">
                                                 <form method="post" class="delete_form"
                                                     action="{{ route('books.destroy', ['book' => $book]) }}">
                                                     {{ method_field('DELETE') }}
                                                     {{ csrf_field() }}
                                                     <button type="submit"
-                                                        class="btn btn-danger">{{ trans('Delete') }}</button>
+                                                        style="background: none; border: none; color: #DC3545">
+                                                        <i class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
+
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
