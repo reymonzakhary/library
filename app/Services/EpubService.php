@@ -2,14 +2,18 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use PHPePub\Core\EPub;
+use \Convertio\Convertio;
+use \ConvertApi\ConvertApi;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use TonchikTm\PdfToHtml\Pdf;
 use PHPePub\Helpers\CalibreHelper;
+use Illuminate\Support\Facades\Storage;
 
 class EpubService
 {
+    private $images;
     function getElementsByClassName($dom, $ClassName, $tagName = null)
     {
         if ($tagName) {
@@ -30,14 +34,14 @@ class EpubService
 
     public function htmlConverter()
     {
-        $pdf = new Pdf('/var/www/html/public/files/Anne-of-Green-Gables-By-Lucy-Maud-Montgomery-Retold-by-Anne-Collins-book-PDF.pdf', [
+        $pdf = new Pdf('/var/www/html/public/files/sample-pdf-with-images.pdf', [
             'pdftohtml_path' => '/usr/bin/pdftohtml',
             'pdfinfo_path' => '/usr/bin/pdfinfo'
         ]);
         // $allPages = $pdf->getHtml()->getAllPages();
+        //  $allPages;
         // dd($allPages);
-        $html = Storage::disk('public')->get('Anne-of-Green-Gables.html');
-        // dd($html);
+        $html = Storage::disk('public')->get('sample_pdf_with_imgs.html');
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $internalErrors = libxml_use_internal_errors(true);
         $dom->loadHTML($html);
@@ -45,14 +49,46 @@ class EpubService
         foreach ($this->getElementsByClassName($dom, 'page', 'div') as $node) {
             $allPages[] = $dom->saveHTML($node);
         }
-
+        // echo $html;
         return view('viewer')->with('allPages', $allPages);
+    }
+
+    public function pdfConverter()
+    {
+        $source_pdf = ('/var/www/html/public/files/english-short-stories-free.pdf');
+        $pdf_name = basename($source_pdf);
+        $output_folder = storage_path('app/public/html/converted-' . $pdf_name);
+        if (!file_exists($output_folder)) {
+            mkdir($output_folder, 0777, true);
+        }
+        // $a = passthru("pdftohtml $source_pdf $output_folder/new_file_name");
+        $file = Storage::disk('public')->get('/html/converted-' . $pdf_name . '/new_file_names.html');
+        $dom = new \DOMDocument();
+        $internalErrors = libxml_use_internal_errors(true);
+        $dom->loadHTML($file);
+        libxml_use_internal_errors($internalErrors);
+        $xpath = new \DOMXPath($dom);
+        $div = $xpath->query('//body');
+        $div = $div->item(0);
+        $html = $dom->saveXML($div);
+        $content = explode('<a name', $html);
+        unset($content[0]);
+        $content[count($content) - 1] = Str::replace('</body>', '', $content[count($content) - 1]);
+        // $text = collect($content)->map(function($content){
+        // // dd($replace);
+        // });
+        foreach ($content as $element) {
+            //"(/\src=")(.*?)('/\new_file_name')/"
+            dd(preg_replace('/<img[^>]*src=([\'"])(?<src>.+?)\1[^>]*>/i', '', $element));
+            $allPages[] = preg_replace('/="[0-9]+"\/>/', '', $element);
+        }
+        return view('viewer')->withTitle($pdf_name)->withAllPages($allPages);
     }
 
     public function chapterSeparator(Request $request)
     {
         $chapters = $request->chapters; //get start of each chapter
-        $htmlPages = $this->htmlConverter()->allPages;
+        $htmlPages = $this->pdfConverter()->allPages;
         $values = [];
 
         //get pages of each chapter to be combined as a chapter
@@ -63,28 +99,24 @@ class EpubService
         foreach ($values as $chapter) {
             $chapterCollection[] = collect($htmlPages)->filter(fn ($i, $index) => in_array($index, $chapter))->toArray();
         }
-
-
-        $this->convert($chapterCollection);
+        $this->convert($chapterCollection, $request->title);
     }
+
     //convert given html to .epub
-    public function convert($chapters)
+    public function convert($chapters, $title)
     {
         $doc = new \DOMDocument();
         $content_start =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-            . "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n"
-            . "    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n"
             . "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
             . "<head>"
             . "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
-            . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\" />\n"
+            . "<link href=\"stylesheet.css\" rel=\"stylesheet\" type=\"text/css\"/>\n"
+            . "<link href=\"page_styles.css\" rel=\"stylesheet\" type=\"text/css\"/>\n"
             . "<title>Test Book</title>\n"
             . "</head>\n"
-            . "<body>\n<div>";
-        $bookEnd = "</div></body>\n</html>\n";
-        // setting timezone for time functions used for logging to work properly
-        date_default_timezone_set('Europe/Berlin');
+            . "<body class='main'>\n";
+        $bookEnd = "</body>\n</html>\n";
         $fileDir = './PHPePub';
         $book = new EPub(); // no arguments gives us the default ePub 2, lang=en and dir="ltr"
         $book->setTitle("Simple Test book");
@@ -97,72 +129,31 @@ class EpubService
         $book->setRights("Copyright and licence information specific for the book."); // As this is generated, this _could_ contain the name or licence information of the user who purchased the book, if needed. If this is used that way, the identifier must also be made unique for the book.
         $book->setSourceURL("http://JohnJaneDoePublications.com/books/TestBookSimple.html");
         CalibreHelper::setCalibreMetadata($book, "PHPePub Test books", "5");
-        $cssData = "body .page { background-color:white; position:relative; z-index:0; }
-        .vector { position:absolute; z-index:1; }
-        .image { position:absolute; z-index:2; }
-        .text { position:absolute; z-index:3; opacity:inherit; white-space:nowrap; }
-        .annotation { position:absolute; z-index:5; }
-        .control { position:absolute; z-index:10; }
-        .annotation2 { position:absolute; z-index:7; }
-        .dummyimg { vertical-align: top; border: none; }
-        }\n";
-        $book->addCSSFile("styles.css", "css1", $cssData);
-        foreach ($chapters as $num => $chapter) {
-            $patterns = array('/style=[^>]*/', '/<p[^>]*>(?:\s|&nbsp;)*<\/p>/');
-            $content =  preg_replace($patterns, '', $chapter);
-            // dd(implode($chapter));
-            // $modify =preg_replace('/<span class="text">(.*?)<\/span>/', '<p class="calibre1">', $content);
+        // $book->setCoverImage("new_file_name-1_1.jpg", file_get_contents('/var/www/html/storage/app/public/html/converted2/new_file_name-1_1.jpg'), "image/jpg");
+        // dd($this->images);
+        // EpubService::pdfConverter()->images;
+        // $imgs = $this->pdfConverter()->images;
 
-            // dd($modify);
-            $book->addChapter("Chapter " . $num, "chapter" . $num . ".html", $content_start . implode($chapter) . $bookEnd);
+        $images = Storage::disk("public")->allFiles('html/converted-' . $title);
+        foreach ($images as $image) {
+            $name = basename($image);
+            $path = storage_path('app/public/' . $image);
+            $mimeType = mime_content_type($path);
+            $book->addFile($name, '1', file_get_contents($path), $mimeType);
+        }
+        foreach ($chapters as $num => $chapter) {
+            // dd($chapter);
+            // $patterns = array('/<div class="vector".*?<\/div>/', '/style=[^>]*/', '/<p[^>]*>(?:\s|&nbsp;)*<\/p>/');
+            $patterns = array('/<div class="vector".*?<\/div>/', '/style=[^>]*/', '/<p[^>]*>(?:\s|&nbsp;)*<\/p>/');
+            $content = preg_replace($patterns, '', $chapter);
+            // $content = preg_replace("/<img[^>]+\>/i", "<img src=''>", $removeStyle, '/class="vector" ><img [^>]*/',);
+            // $content = strip_tags(implode($modify),'<div class="vector"'); 
+            // dd($content);
+            $book->addChapter("Chapter " . $num, "chapter" . $num . ".html", $content_start . implode($content) . $bookEnd);
         }
         $book->buildTOC();
         $book->finalize();
-        $zipData = $book->sendBook("ExampleBook1_test");
-    }
-
-    public function pdfConverter()
-    {
-        $source_pdf = ('/var/www/html/public/files/Anne-of-Green-Gables-By-Lucy-Maud-Montgomery-Retold-by-Anne-Collins-book-PDF.pdf');
-        $output_folder = storage_path('app/public/html');
-        if (!file_exists($output_folder)) {
-            mkdir($output_folder, 0777, true);
-        }
-        // $allPages = file_get_contents($output_folder.'/new_file_names.html');
-        $file = Storage::disk('public')->get('html/new_file_names.html');
-        echo $file;
-        // $dom = new \DOMDocument();
-        // $dom->loadHTML($file);
-        // // $xpath = new \DOMXPath($dom);
-        // // $xpath->registerNamespace("xml", "http://www.w3.org/1999/xhtml");
-        // // $html = '';
-        // // $body = $xpath->query("//a");
-        // $array = array();
-        // foreach ($dom->getElementsByTagName('style') as $node) {
-        //     if ($node->tagName != 'body' && $node->tagName != 'html') {
-        //         $array[] = $dom->saveHTML($node);
-        //         dd($file);
-        //     }
-        // }
-        // print_r($array);
-        // // foreach ($body->childNodes as $node) {
-        // //     $html .= $dom->saveHTML($node);
-        // // }
-        // // unset($dom, $xpath, $body, $content);
-        // // $trimmed = trim($html);
-        // // dd($body);
-        // // $body = $dom->getElementsByTagName('a');
-        // // dd($body);
-        // // return view('viewer')->with('allPages', $file);
-        // foreach ($dom->getElementsByTagName('hr') as $node) {
-        //     $title = $dom->saveHTML($node);
-        //     $content[$title] = array();
-        //     while (($node = $node->nextSibling) && $node->nodeName !== 'a') {
-        //         $content[$title] = $dom->saveHTML($node);
-        //     }
-        // preg_match_all("/[\s]+name=\d+></a>\+((.+?)<hr />)?/is",  html_entity_decode($file), $matches);
-        // dd($matches[2]);
-        // }
+        $zipData = $book->sendBook("eBook");
     }
 
     public function convertByApi()
@@ -293,8 +284,8 @@ class EpubService
                     $resultFileUrl = $json["url"];
                     // Display link to the file with conversion results
                     $html = file_get_contents($resultFileUrl);
-                    Storage::disk('local')->put('convertedpdf.html', $html);
-                    return response()->download(storage_path() . '/app/convertedpdf.html')->deleteFileAfterSend(true);
+                    Storage::disk('local')->put('converted2pdf.html', $html);
+                    return response()->download(storage_path() . '/app/converted2pdf.html')->deleteFileAfterSend(true);
                     echo "<div><h2>Conversion Result:</h2><a href='" . $resultFileUrl . "' target='_blank'>" . $resultFileUrl . "</a></div>";
                 } else {
                     // Display service reported error
@@ -324,21 +315,49 @@ class EpubService
 
         // Submit a conversion job
         $job = $zamzar->jobs->submit([
-            'source_file' => '/var/www/html/public/files/1657203562_Get_Started_With_Smallpdf.pdf',
-            'target_format' => '.epub'
+            'source_file' => '/var/www/html/public/files/file-example_PDF_1MB.pdf',
+            'target_format' => 'epub'
         ]);
 
         // Wait for the job to complete (the default timeout is 60 seconds)
         $job->waitForCompletion([
-            'timeout' => 60
+            'timeout' => 120
         ]);
 
-        // Download the converted files 
+        // Download the converted2 files 
         $job->downloadTargetFiles([
             'download_path' => '/var/www/html/public/files'
         ]);
 
         // Delete the source and target files on Zamzar's servers
         $job->deleteAllFiles();
+    }
+
+    public function Convertio()
+    {
+
+        $API = new \Convertio\Convertio("56d46c0409b16e1fe40953fced4105a7");           // You can obtain API Key here: https://convertio.co/api/
+        $API->start('/var/www/html/public/files/Anne-of-Green-Gables-By-Lucy-Maud-Montgomery-Retold-by-Anne-Collins-book-PDF.pdf', 'epub')
+            ->wait()
+            ->download('/var/www/html/public/download/english_stories.epub')
+            ->delete();
+    }
+
+    public function convertApi()
+    {
+        ConvertApi::setApiSecret('xrKR4yYI8EA24Hji');
+        // $result = ConvertApi::convert(
+        //     'pdf',
+        //     ['File' => '/var/www/html/public/files/english-short-stories-free.pdf'],
+        //     'docx'
+        // );
+        $result = ConvertApi::convert(
+            'pdf',
+            [
+                'File' => '/var/www/html/public/files/english-short-stories-free.pdf',
+            ],
+            'pdf'
+        );
+        $result->saveFiles('/var/www/html/public/download');
     }
 }

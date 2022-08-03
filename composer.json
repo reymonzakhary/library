@@ -6,6 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "aspose-cloud/aspose-words-cloud": "^22.7",
+        "convertapi/convertapi-php": "^1.6",
+        "convertio/convertio-php": "^0.4.0",
         "grandt/phpepub": "4.0.7.1",
         "gufy/pdftohtml-php": "~2",
         "guzzlehttp/guzzle": "^7.2",

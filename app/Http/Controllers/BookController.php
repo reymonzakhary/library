@@ -139,7 +139,7 @@ class BookController extends Controller
     public function convertHtml(EpubService $epub)
     {
         //
-        $htmlTest = $epub->htmlConverter();
+        $htmlTest = $epub->pdfConverter();
         return $htmlTest;
     }
 
