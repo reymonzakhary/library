@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class EpubService
 {
-    private $images;
     function getElementsByClassName($dom, $ClassName, $tagName = null)
     {
         if ($tagName) {
@@ -38,9 +37,7 @@ class EpubService
             'pdftohtml_path' => '/usr/bin/pdftohtml',
             'pdfinfo_path' => '/usr/bin/pdfinfo'
         ]);
-        // $allPages = $pdf->getHtml()->getAllPages();
-        //  $allPages;
-        // dd($allPages);
+        $allPages = $pdf->getHtml()->getAllPages();
         $html = Storage::disk('public')->get('sample_pdf_with_imgs.html');
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $internalErrors = libxml_use_internal_errors(true);
@@ -49,20 +46,21 @@ class EpubService
         foreach ($this->getElementsByClassName($dom, 'page', 'div') as $node) {
             $allPages[] = $dom->saveHTML($node);
         }
-        // echo $html;
         return view('viewer')->with('allPages', $allPages);
     }
 
     public function pdfConverter()
     {
-        $source_pdf = ('/var/www/html/public/files/petherbridge.pdf');
+        $source_pdf = ('/var/www/html/public/files/english-short-stories-free.pdf');
         $pdf_name = basename($source_pdf);
         $output_folder = storage_path('app/public/html/converted-' . $pdf_name);
         if (!file_exists($output_folder)) {
             mkdir($output_folder, 0777, true);
         }
-        // $a = passthru("pdftohtml $source_pdf $output_folder/new_file_name", $b);
+        $a = exec("pdftohtml $source_pdf $output_folder/new_file_name", $b);
+
         $file = Storage::disk('public')->get('/html/converted-' . $pdf_name . '/new_file_names.html');
+
         $dom = new \DOMDocument();
         $internalErrors = libxml_use_internal_errors(true);
         $dom->loadHTML($file);
@@ -76,14 +74,18 @@ class EpubService
 
         $content[count($content) - 1] = Str::replace('</body>', '', $content[count($content) - 1]);
 
+        //replace img src with img name in each page
         foreach ($content as $element) {
             $src = preg_match_all('/<img [^>]*src=["|\']([^"|\']+)/i', $element, $matches);
             foreach (optional($matches)[1] as $value) {
-                $parts = explode('/', $value);
-                $img_name = $parts[count($parts) - 1];
-                $element = preg_replace('#' . $value . '#', $img_name, $element);
-            }
-            $allPages[] = preg_replace('/="[0-9]+"\/>/', '', $element);
+                // $parts = explode('/', $value);
+                // $img_name = $parts[count($parts) - 1];
+                $type = pathinfo($value, PATHINFO_EXTENSION);
+                $data = file_get_contents($value);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                $element = preg_replace('#' . $value . '#', $base64, $element);            }
+            $patterns = array('/<hr\/>/', '/="[0-9]+"\/>/');
+            $allPages[] = preg_replace($patterns, '<br/>', $element);
         }
         return view('viewer')->withTitle($pdf_name)->withAllPages($allPages);
     }
@@ -108,6 +110,7 @@ class EpubService
     //convert given html to .epub
     public function convert($chapters, $title)
     {
+        $book_title = pathinfo($title, PATHINFO_FILENAME);
         $doc = new \DOMDocument();
         $content_start =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -122,7 +125,7 @@ class EpubService
         $bookEnd = "</body>\n</html>\n";
         $fileDir = './PHPePub';
         $book = new EPub(); // no arguments gives us the default ePub 2, lang=en and dir="ltr"
-        $book->setTitle("Simple Test book");
+        $book->setTitle($book_title);
         $book->setIdentifier("http://JohnJaneDoePublications.com/books/TestBookSimple.html", EPub::IDENTIFIER_URI); // Could also be the ISBN number, preferrd for published books, or a UUID.
         $book->setLanguage("en"); // Not needed, but included for the example, Language is mandatory, but EPub defaults to "en". Use RFC3066 Language codes, such as "en", "da", "fr" etc.
         $book->setDescription("This is a brief description\nA test ePub book as an example of building a book in PHP");
@@ -133,25 +136,27 @@ class EpubService
         $book->setSourceURL("http://JohnJaneDoePublications.com/books/TestBookSimple.html");
         CalibreHelper::setCalibreMetadata($book, "PHPePub Test books", "5");
         $images = Storage::disk("public")->allFiles('html/converted-' . $title);
-        foreach ($images as $image) {
-            $name = basename($image);
-            $path = storage_path('app/public/' . $image);
-            $mimeType = mime_content_type($path);
-            $book->addFile($name, '1', file_get_contents($path), $mimeType);
-        }
+        // foreach ($images as $image) {
+        //     $name = basename($image);
+        //     $path = storage_path('app/public/' . $image);
+        //     $mimeType = mime_content_type($path);
+        //     $book->addFile($name, '1', file_get_contents($path), $mimeType);
+        // }
         foreach ($chapters as $num => $chapter) {
-            // dd($chapter);
-            // $patterns = array('/<div class="vector".*?<\/div>/', '/style=[^>]*/', '/<p[^>]*>(?:\s|&nbsp;)*<\/p>/');
-            $patterns = array('/<div class="vector".*?<\/div>/', '/style=[^>]*/', '/<p[^>]*>(?:\s|&nbsp;)*<\/p>/');
+            // $src = preg_match_all('/<img [^>]*src=["|\']([^"|\']+)/i', implode($chapter), $matches);
+            // foreach (optional($matches)[1] as $value) {
+            //     $parts = explode('/', $value);
+            //     $img_name = $parts[count($parts) - 1];
+            //     dd($value);
+            //     $element = preg_replace('#' . $value . '#', $img_name, $chapter);
+            // }
+            $patterns = array('/<hr\/>/', '/<div class="vector".*?<\/div>/', '/style=[^>]*/', '/<p[^>]*>(?:\s|&nbsp;)*<\/p>/');
             $content = preg_replace($patterns, '', $chapter);
-            // $content = preg_replace("/<img[^>]+\>/i", "<img src=''>", $removeStyle, '/class="vector" ><img [^>]*/',);
-            // $content = strip_tags(implode($modify),'<div class="vector"'); 
-            // dd($content);
             $book->addChapter("Chapter " . $num, "chapter" . $num . ".html", $content_start . implode($content) . $bookEnd);
         }
         $book->buildTOC();
         $book->finalize();
-        $zipData = $book->sendBook($title);
+        $zipData = $book->sendBook($book_title);
     }
 
     public function convertByApi()
