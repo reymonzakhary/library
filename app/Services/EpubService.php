@@ -55,13 +55,13 @@ class EpubService
 
     public function pdfConverter()
     {
-        $source_pdf = ('/var/www/html/public/files/english-short-stories-free.pdf');
+        $source_pdf = ('/var/www/html/public/files/petherbridge.pdf');
         $pdf_name = basename($source_pdf);
         $output_folder = storage_path('app/public/html/converted-' . $pdf_name);
         if (!file_exists($output_folder)) {
             mkdir($output_folder, 0777, true);
         }
-        // $a = passthru("pdftohtml $source_pdf $output_folder/new_file_name");
+        // $a = passthru("pdftohtml $source_pdf $output_folder/new_file_name", $b);
         $file = Storage::disk('public')->get('/html/converted-' . $pdf_name . '/new_file_names.html');
         $dom = new \DOMDocument();
         $internalErrors = libxml_use_internal_errors(true);
@@ -73,13 +73,16 @@ class EpubService
         $html = $dom->saveXML($div);
         $content = explode('<a name', $html);
         unset($content[0]);
+
         $content[count($content) - 1] = Str::replace('</body>', '', $content[count($content) - 1]);
-        // $text = collect($content)->map(function($content){
-        // // dd($replace);
-        // });
+
         foreach ($content as $element) {
-            //"(/\src=")(.*?)('/\new_file_name')/"
-            dd(preg_replace('/<img[^>]*src=([\'"])(?<src>.+?)\1[^>]*>/i', '', $element));
+            $src = preg_match_all('/<img [^>]*src=["|\']([^"|\']+)/i', $element, $matches);
+            foreach (optional($matches)[1] as $value) {
+                $parts = explode('/', $value);
+                $img_name = $parts[count($parts) - 1];
+                $element = preg_replace('#' . $value . '#', $img_name, $element);
+            }
             $allPages[] = preg_replace('/="[0-9]+"\/>/', '', $element);
         }
         return view('viewer')->withTitle($pdf_name)->withAllPages($allPages);
@@ -129,11 +132,6 @@ class EpubService
         $book->setRights("Copyright and licence information specific for the book."); // As this is generated, this _could_ contain the name or licence information of the user who purchased the book, if needed. If this is used that way, the identifier must also be made unique for the book.
         $book->setSourceURL("http://JohnJaneDoePublications.com/books/TestBookSimple.html");
         CalibreHelper::setCalibreMetadata($book, "PHPePub Test books", "5");
-        // $book->setCoverImage("new_file_name-1_1.jpg", file_get_contents('/var/www/html/storage/app/public/html/converted2/new_file_name-1_1.jpg'), "image/jpg");
-        // dd($this->images);
-        // EpubService::pdfConverter()->images;
-        // $imgs = $this->pdfConverter()->images;
-
         $images = Storage::disk("public")->allFiles('html/converted-' . $title);
         foreach ($images as $image) {
             $name = basename($image);
@@ -153,7 +151,7 @@ class EpubService
         }
         $book->buildTOC();
         $book->finalize();
-        $zipData = $book->sendBook("eBook");
+        $zipData = $book->sendBook($title);
     }
 
     public function convertByApi()
