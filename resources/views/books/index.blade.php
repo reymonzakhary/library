@@ -42,7 +42,9 @@
                                 <a href="{{ route('books.index') }}" class="nav-link" href="layout-static.html">Home</a>
                                 <a href="{{ route('categories.index') }}" class="nav-link"
                                     href="layout-sidenav-light.html">Categories</a>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                    <a href="/admin/epub" class="nav-link"
+                                    href="layout-sidenav-light.html">Epub</a>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                     data-bs-target="#pagesCollapseAuth" aria-expanded="false"
                                     aria-controls="pagesCollapseAuth">
                                     Authentication

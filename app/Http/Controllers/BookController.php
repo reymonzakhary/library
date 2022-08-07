@@ -130,23 +130,19 @@ class BookController extends Controller
         return redirect()->route('books.index', ['book' => $book])->with('success', 'book was deleted');
     }
 
-    public function convertPdf(EpubService $epub)
+    /**
+     * Convert PDF file to HTML content and Images.
+     */
+    public function pdfConverter(EpubService $epub)
     {
-        //
-        $htmlTest = $epub->convertByApi();
+        $htmlTest = $epub->pdfToHtmlConverter();
         return $htmlTest;
     }
-
-    public function convertHtml(EpubService $epub)
-    {
-        //
-        $htmlTest = $epub->pdfConverter();
-        return $htmlTest;
-    }
-
+    /**
+     * Seperate HTML into chapters and converts them to Epub.
+     */
     public function updateHtml(EpubService $epub, Request $request)
     {
-        //
         $updateHtml = $epub->chapterSeparator($request);
         return $updateHtml;
     }
