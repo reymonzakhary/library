@@ -149,7 +149,7 @@
                                                     <label class="form-label" for="b-img">Download Template</label>
                                                     {{-- <strong style="color: red; float:right">* Requied</strong> --}}
                                                     <div class="form-group">
-                                                        <button class="btn btn-primary">Download Template</button>
+                                                        <a href="/download/templateExample.xlsx" download="templateExample.xlsx" class="btn btn-primary">Download Template</a>
                                                     </div>
                                                 </div>
                                             </div>

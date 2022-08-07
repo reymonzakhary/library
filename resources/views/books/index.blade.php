@@ -231,7 +231,7 @@
                                 <i class="fas fa-table me-1"></i>
                                 Books Table
                             </div>
-                            <a href="" style="float: right">
+                            <a href="{{ route('export.excel') }}" style="float: right">
                                 <i class="fas fa-arrow-down me-1"></i>
                                 Download List
                             </a>

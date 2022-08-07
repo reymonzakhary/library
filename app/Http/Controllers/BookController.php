@@ -45,26 +45,27 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        //
-        $book = Book::create($request->validated());
+        $book = new Book;
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->content = $request->content;
+        $book->category_id = $request->category_id;
         if ($request->file('file')) {
             $fileName = time() . '_' . $request->file->getClientOriginalName();
             $filePath = $request->file('file')->storeAs('uploads/files', $fileName, 'public');
-            $request->file = time() . '_' . $request->file->getClientOriginalName();
-            $request->file_path = '/storage/' . $filePath;
-        }
-        if ($request->file('audio')) {
-            $fileName = time() . '_' . $request->audio->getClientOriginalName();
-            $filePath = $request->file('audio')->storeAs('uploads/audio', $fileName, 'public');
-            $request->file = time() . '_' . $request->audio->getClientOriginalName();
-            $request->file_path = '/storage/' . $filePath;
+            $book->file = $filePath;
         }
         if ($request->file('img')) {
-            $fileName = time() . '_' . $request->img->getClientOriginalName();
+            $fileName = time() . '_' . $request->file->getClientOriginalName();
             $filePath = $request->file('img')->storeAs('uploads/imgs', $fileName, 'public');
-            $request->file = time() . '_' . $request->img->getClientOriginalName();
-            $request->file_path = '/storage/' . $filePath;
+            $book->img = $filePath;
         }
+        if ($request->file('audio')) {
+            $fileName = time() . '_' . $request->file->getClientOriginalName();
+            $filePath = $request->file('audio')->storeAs('uploads/audio', $fileName, 'public');
+            $book->audio = $filePath;
+        }
+        $book->save();
         return redirect()->route('books.index')->with('success', 'book was added');
     }
 
@@ -174,5 +175,4 @@ class BookController extends Controller
         );
         return Response::download($file, $headers);
     }
-
 }
